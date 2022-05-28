@@ -1,0 +1,13 @@
+<div>
+  <input type="file" style="display: none" (change)="getHealthCertificateContent($event)" #fileUpload />
+  <div class="file-upload">
+    {{ fileName || 'No file uploaded yet.' }}
+    <button class="upload-btn" (click)="fileUpload.click()">Select a Covid-19 QR Code</button>
+  </div>
+
+  <img src="assets/covidFakeQRCode.png" alt="lol" />
+
+  <div class="pre-json">
+    <pre> {{ jsonHcert | json }}</pre>
+  </div>
+</div>
