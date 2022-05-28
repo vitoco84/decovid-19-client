@@ -22,21 +22,17 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Grant Permissions
-        run: chmod +x gradlew
-
       - name: Install Dependencies
         run: npm install
 
-      - name: Setup
-        run: npm ci
+      - name: Test
+        run: npm test
 
       - name: Linters and Prettier
         run: npm run all-lints
 
-      - name: Test
+      - name: SonarCloud Test Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: npm test sonarqube --continue '-Dfile.encoding=UTF-8'
