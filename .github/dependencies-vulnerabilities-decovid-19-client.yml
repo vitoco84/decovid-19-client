@@ -1,0 +1,19 @@
+name: Snyk Dependencies Vulnerabilities decovid-19-client
+
+on:
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
