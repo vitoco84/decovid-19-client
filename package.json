@@ -9,7 +9,8 @@
     "test": "ng test --browsers ChromeHeadless --code-coverage --watch=false",
     "format:fix": "pretty-quick --staged",
     "lint": "ng lint",
-    "all-lints": "npm run format:fix && npm run lint"
+    "all-lints": "npm run format:fix && npm run lint",
+    "sonar": "sonar-scanner"
   },
   "private": true,
   "dependencies": {
