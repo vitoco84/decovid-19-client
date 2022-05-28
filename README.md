@@ -1,19 +1,24 @@
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=vitoco84_decovid-19-client)](https://sonarcloud.io/summary/new_code?id=vitoco84_decovid-19-client)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=vitoco84_decovid-19-client&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=vitoco84_decovid-19-client)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=vitoco84_decovid-19-client&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=vitoco84_decovid-19-client)
+![Known Vulnerabilities](https://snyk.io/test/github/vitoco84/decovid-19-client/badge.svg)
+![CI decovid-19-client](https://github.com/vitoco84/decovid-19-client/actions/workflows/ci-decovid-19-client.yml/badge.svg)
+
 # Decovid-19-Client
 
-> This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.4.
+> * This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.4.
+> * No personal or sensitive data is stored in any way.
+> * Frontend Application for [decovid-19-core](https://github.com/vitoco84/decovid-19-core).
 
-## Development server
+# Install Prerequisites and Setup
+> [Node.js](https://nodejs.org/en/) installed
+> 
+> Run: `npm install`
 
-> Run `ng serve` for a dev server. Navigate to [http://localhost:4200/](http://localhost:4200/). The application will automatically reload if you change any of the source files.
+# Getting it Running
 
-## Build
+> Run from terminal with: `ng serve`. Navigate to [http://localhost:4200/](http://localhost:4200/). The application will automatically reload if you change any of the source files.
 
-> Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Running Tests
 
-## Running unit tests
-
-> Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-> Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+> Run `npm run test` to execute all tests via [Karma](https://karma-runner.github.io).
