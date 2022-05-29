@@ -1,13 +1,16 @@
-<div>
-  <input type="file" style="display: none" (change)="getHealthCertificateContent($event)" #fileUpload />
-  <div class="file-upload">
-    {{ fileName || 'No file uploaded yet.' }}
-    <button class="upload-btn" (click)="fileUpload.click()">Select a Covid-19 QR Code</button>
-  </div>
+<div class="container">
+  <section class="text-sm-start">
+    <label for="qrCodeFile" class="form-label m-2">Covid-19 QR Code Upload</label>
+    <input class="form-control form-control-sm m-2" type="file" id="qrCodeFile" (change)="getHealthCertificateContent($event)" />
 
-  <img src="assets/covidFakeQRCode.png" alt="lol" />
+    <label for="pemString" class="form-label m-2">Covid-19 PEM Certificate</label>
+    <input class="form-control form-control-sm m-2" type="text" id="pemString" placeholder="PEM Certificate" #pemInput />
+    <button type="submit" class="btn btn-light btn-sm m-2" (click)="getX509Certificate(pemInput.value)">Show Certificate</button>
 
-  <div class="pre-json">
-    <pre> {{ jsonHcert | json }}</pre>
-  </div>
+    <div class="d-sm-flex align-items-center justify-content-between">
+      <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="lol" />
+      <pre class="text-warning m-2"> {{ jsonHcert | json }}</pre>
+      <pre class="text-warning m-2"> {{ jsonPem | json }}</pre>
+    </div>
+  </section>
 </div>

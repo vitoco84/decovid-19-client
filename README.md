@@ -20,5 +20,7 @@
 > Run from terminal with: `npm run start`. Navigate to [http://localhost:4200/](http://localhost:4200/). The application will automatically reload if you change any of the source files.
 
 # Running Tests
-
 > Run `npm run test` to execute all tests via [Karma](https://karma-runner.github.io).
+
+# Running Linters
+> Run `npm run all-lints` to execute Linting.
