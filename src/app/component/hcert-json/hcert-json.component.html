@@ -3,6 +3,8 @@
     <label for="qrCodeFile" class="form-label m-2">Covid-19 QR Code Upload</label>
     <input class="form-control form-control-sm m-2" type="file" id="qrCodeFile" (change)="getHealthCertificateContentFromFile($event)" />
 
+    <button type="submit" class="btn btn-light btn-sm m-2" (click)="getVerification()">Verify Certificate</button>
+
     <label for="hcertPrefixString" class="form-label m-2">Covid-19 QR Code Hcert Prefix Upload</label>
     <input class="form-control form-control-sm m-2" type="text" id="hcertPrefixString" placeholder="HCERT Prefix" #hcertPrefixInput />
     <button type="submit" class="btn btn-light btn-sm m-2" (click)="getHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
@@ -16,7 +18,12 @@
     <div class="d-sm-flex align-items-center justify-content-between">
       <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="lol" />
       <pre class="text-warning m-2"> {{ hcertServerResponse | json }}</pre>
+
       <pre class="text-warning m-2"> {{ pemCertServerResponse | json }}</pre>
+    </div>
+
+    <div>
+      <pre class="text-warning m-2"> {{ hcertVerificationServerResponse | json }}</pre>
     </div>
   </section>
 </div>

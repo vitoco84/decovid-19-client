@@ -1,21 +1,18 @@
 import {Component} from '@angular/core';
 import {Decovid19Service} from '../../service/decovid19.service';
-import {PemCertServerRequest} from '../../server/pemCertServerRequest';
-import {PEMCertServerResponse} from '../../server/pemCertServerResponse';
-import {HcertServerResponse} from '../../server/hcertServerResponse';
-import {HcertServerRequest} from '../../server/hcertServerRequest';
 import {HttpStatusCode} from '@angular/common/http';
+import {ClientCommunication} from '../../server/clientCommunication';
 
 @Component({
   selector: 'app-hcert-json',
-  templateUrl: './hcert-json.component.html',
-  styleUrls: ['./hcert-json.component.css']
+  templateUrl: './hcert-json.component.html'
 })
 export class HcertJsonComponent {
   private static BAD_REQUEST = 'BAD REQUEST';
 
-  pemCertServerResponse: PEMCertServerResponse;
-  hcertServerResponse: HcertServerResponse;
+  pemCertServerResponse: ClientCommunication.PEMCertServerResponse;
+  hcertServerResponse: ClientCommunication.HcertServerResponse;
+  hcertVerificationServerResponse: ClientCommunication.HcertVerificationServerResponse;
   error: string | undefined;
   errorMessage: string | undefined;
 
@@ -38,7 +35,7 @@ export class HcertJsonComponent {
 
   getHealthCertificateContentFromPrefix(hcertPrefixInput: string): void {
     if (hcertPrefixInput) {
-      const hcertServerRequest: HcertServerRequest = {
+      const hcertServerRequest: ClientCommunication.HcertServerRequest = {
         hcertPrefix: hcertPrefixInput
       };
       this.decovid19Service.getHealthCertificateContentFromPrefix(hcertServerRequest).subscribe({
@@ -55,7 +52,7 @@ export class HcertJsonComponent {
 
   getX509Certificate(pemInput: string): void {
     if (pemInput) {
-      const pemCertServRequest: PemCertServerRequest = {
+      const pemCertServRequest: ClientCommunication.PEMCertServerRequest = {
         pemCertificate: pemInput
       };
       this.decovid19Service.getX509Certificate(pemCertServRequest).subscribe({
@@ -65,6 +62,25 @@ export class HcertJsonComponent {
         next: res => {
           this.cleanupErrors();
           this.pemCertServerResponse = res;
+        }
+      });
+    }
+  }
+
+  getVerification(): void {
+    if (this.hcertServerResponse) {
+      const hcertVerificationServerRequest: ClientCommunication.HcertVerificationServerRequest = {
+        bearerToken: '',
+        keyId: this.hcertServerResponse.hcertKID,
+        hcertPrefix: this.hcertServerResponse.hcertPrefix
+      };
+      this.decovid19Service.getVerification(hcertVerificationServerRequest).subscribe({
+        error: err => {
+          this.setErrors(err);
+        },
+        next: res => {
+          this.cleanupErrors();
+          this.hcertVerificationServerResponse = res;
         }
       });
     }
