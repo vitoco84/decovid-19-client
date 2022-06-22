@@ -14,6 +14,7 @@
     <button type="submit" class="btn btn-light btn-sm m-2" (click)="getX509Certificate(pemInput.value)">Show Certificate</button>
 
     <div *ngIf="errorMessage" class="m-2 text-danger">{{ errorMessage }}</div>
+    <div *ngIf="validationErrorServerResponse" class="m-2 text-danger">{{ validationErrorServerResponse | json }}</div>
 
     <div class="d-sm-flex align-items-center justify-content-between">
       <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="lol" />

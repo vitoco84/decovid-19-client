@@ -65,10 +65,19 @@ export namespace ClientCommunication {
     isTrustChainVerified: boolean;
   }
 
+  export interface ValidationErrorServerResponse {
+    validationErrors: ValidationError[];
+  }
+
   export interface HcertHolder {
     fn: string;
     fnt: string;
     gn: string;
     gnt: string;
+  }
+
+  export interface ValidationError {
+    fieldName: string;
+    message: string;
   }
 }

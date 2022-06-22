@@ -15,6 +15,7 @@ export class HcertJsonComponent {
   hcertVerificationServerResponse: ClientCommunication.HcertVerificationServerResponse;
   error: string | undefined;
   errorMessage: string | undefined;
+  validationErrorServerResponse: ClientCommunication.ValidationErrorServerResponse;
 
   constructor(private decovid19Service: Decovid19Service) {}
 
@@ -92,6 +93,7 @@ export class HcertJsonComponent {
       this.errorMessage = err.error.message;
     }
     if (err.status === HttpStatusCode.BadRequest) {
+      this.validationErrorServerResponse = err.error;
       this.errorMessage = HcertJsonComponent.BAD_REQUEST;
     }
   }
@@ -99,5 +101,6 @@ export class HcertJsonComponent {
   private cleanupErrors(): void {
     this.error = '';
     this.errorMessage = '';
+    this.validationErrorServerResponse = null;
   }
 }
