@@ -1,0 +1,14 @@
+<div class="container">
+  <section class="text-sm-start">
+    <label for="pemString" class="form-label m-2">Covid-19 PEM Certificate</label>
+    <input class="form-control form-control-sm m-2" type="text" id="pemString" placeholder="PEM Certificate" #pemInput />
+    <button type="submit" class="btn btn-light btn-sm m-2" (click)="decodeX509Certificate(pemInput.value)">Decode Certificate</button>
+
+    <div *ngIf="errorMessage" class="m-2 text-danger">{{ errorMessage }}</div>
+    <div *ngIf="validationErrorServerResponse" class="m-2 text-danger">{{ validationErrorServerResponse | json }}</div>
+
+    <div class="d-sm-flex align-items-center justify-content-between">
+      <pre class="text-warning m-2"> {{ pemCertServerResponse | json }}</pre>
+    </div>
+  </section>
+</div>

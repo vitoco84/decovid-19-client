@@ -19,21 +19,21 @@ export class Decovid19Service {
 
   constructor(private http: HttpClient) {}
 
-  getHealthCertificateContentFromFile(qrCodeFile: File): Observable<ClientCommunication.HcertServerResponse> {
+  decodeHealthCertificateContentFromFile(qrCodeFile: File): Observable<ClientCommunication.HcertServerResponse> {
     const formData = new FormData();
     formData.append(Decovid19Service.IMAGE_FILE_KEY, qrCodeFile);
     return this.http.post<ClientCommunication.HcertServerResponse>(Decovid19Service.QR_CODE_URL, formData);
   }
 
-  getHealthCertificateContentFromPrefix(hcertServerRequest: ClientCommunication.HcertServerRequest): Observable<ClientCommunication.HcertServerResponse> {
+  decodeHealthCertificateContentFromPrefix(hcertServerRequest: ClientCommunication.HcertServerRequest): Observable<ClientCommunication.HcertServerResponse> {
     return this.http.post<ClientCommunication.HcertServerResponse>(Decovid19Service.QR_CODE_PREFIX, hcertServerRequest, this.httpOptions);
   }
 
-  getX509Certificate(pemCertServerRequest: ClientCommunication.PEMCertServerRequest): Observable<ClientCommunication.PEMCertServerResponse> {
+  decodeX509Certificate(pemCertServerRequest: ClientCommunication.PEMCertServerRequest): Observable<ClientCommunication.PEMCertServerResponse> {
     return this.http.post<ClientCommunication.PEMCertServerResponse>(Decovid19Service.PEM_URL, pemCertServerRequest, this.httpOptions);
   }
 
-  getVerification(hcertVerificationServerRequest: ClientCommunication.HcertVerificationServerRequest): Observable<ClientCommunication.HcertVerificationServerResponse> {
+  verifyHealthCertificate(hcertVerificationServerRequest: ClientCommunication.HcertVerificationServerRequest): Observable<ClientCommunication.HcertVerificationServerResponse> {
     return this.http.post<ClientCommunication.HcertVerificationServerResponse>(Decovid19Service.HCERT_VERIFY_URL, hcertVerificationServerRequest, this.httpOptions);
   }
 }
