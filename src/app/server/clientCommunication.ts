@@ -69,6 +69,10 @@ export namespace ClientCommunication {
     validationErrors: ValidationError[];
   }
 
+  export interface QRCodeServerRequest {
+    url: string;
+  }
+
   export interface HcertHolder {
     fn: string;
     fnt: string;

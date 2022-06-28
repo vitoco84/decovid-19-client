@@ -11,9 +11,10 @@ import {HeaderComponent} from './component/header/header.component';
 import {FooterComponent} from './component/footer/footer.component';
 import {AboutDataComponent} from './component/about-data/about-data.component';
 import {DocumentationDataComponent} from './component/documentation-data/documentation-data.component';
+import {UrlDataComponent} from './component/url-data/url-data.component';
 
 @NgModule({
-  declarations: [AppComponent, HcertDataComponent, PemDataComponent, HeaderComponent, FooterComponent, AboutDataComponent, DocumentationDataComponent],
+  declarations: [AppComponent, HcertDataComponent, PemDataComponent, HeaderComponent, FooterComponent, AboutDataComponent, DocumentationDataComponent, UrlDataComponent],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
