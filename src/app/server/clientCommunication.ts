@@ -1,12 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 2.36.1070 on 2022-06-19 17:52:08.
+// Generated using typescript-generator version 2.36.1070 on 2022-06-30 08:56:42.
 
 export namespace ClientCommunication {
   export interface HcertDTO {
     nam: HcertHolder;
     dob: string;
     ver: string;
+  }
+
+  export interface HcertContentDTO extends HcertDTO {
+    r: HcertRecovery[];
+    v: HcertVaccination[];
+    t: HcertTest[];
   }
 
   export interface HcertPublicKeyDTO {
@@ -21,6 +27,7 @@ export namespace ClientCommunication {
   export interface HcertTimeStampDTO {
     hcertExpirationTime: string;
     hcertIssuedAtTime: string;
+    isHcertExpired: boolean;
   }
 
   export interface HcertServerRequest {
@@ -80,8 +87,43 @@ export namespace ClientCommunication {
     gnt: string;
   }
 
+  export interface HcertRecovery extends Hcert {
+    fr: string;
+    df: string;
+    du: string;
+    is: string;
+    ci: string;
+  }
+
+  export interface HcertVaccination extends Hcert {
+    ci: string;
+    dn: number;
+    dt: string;
+    is: string;
+    ma: string;
+    mp: string;
+    sd: number;
+    vp: string;
+  }
+
+  export interface HcertTest extends Hcert {
+    tt: string;
+    nm: string;
+    ma: string;
+    sc: string;
+    tr: string;
+    tc: string;
+    is: string;
+    ci: string;
+  }
+
   export interface ValidationError {
     fieldName: string;
     message: string;
+  }
+
+  export interface Hcert {
+    tg: string;
+    co: string;
   }
 }
