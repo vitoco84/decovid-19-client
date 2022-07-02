@@ -5,9 +5,9 @@ import {ErrorHandlerService} from '../../service/error-handler.service';
 
 @Component({
   selector: 'app-hcert-json',
-  templateUrl: './hcert-data.component.html'
+  templateUrl: './hcert.component.html'
 })
-export class HcertDataComponent {
+export class HcertComponent {
   hcertServerResponse: ClientCommunication.HcertServerResponse;
   hcertVerificationServerResponse: ClientCommunication.HcertVerificationServerResponse;
 

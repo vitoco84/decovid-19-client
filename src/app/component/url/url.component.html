@@ -1,0 +1,16 @@
+<div class="container mt-3">
+  <div class="row d-flex justify-content-center">
+    <section class="text-sm-start">
+      <label for="urlString" class="form-label m-2">URL String</label>
+      <input class="form-control form-control-sm m-2" type="text" id="urlString" placeholder="URL String" #urlInput />
+      <button type="submit" class="btn btn-light btn-sm m-2" (click)="createURLQRCode(urlInput.value)">Create URL QR Code</button>
+
+      <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
+      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
+
+      <div *ngIf="urlQrCodeResponse">
+        <img class="img-fluid w-20 m-2" src="{{ urlQrCodeResponse }}" alt="url-qr-code" />
+      </div>
+    </section>
+  </div>
+</div>

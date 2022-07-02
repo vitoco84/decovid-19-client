@@ -10,8 +10,8 @@ export namespace ClientCommunication {
   }
 
   export interface HcertContentDTO extends HcertDTO {
-    r: HcertRecovery[];
-    v: HcertVaccination[];
+    r?: HcertRecovery[];
+    v?: HcertVaccination[];
     t: HcertTest[];
   }
 
@@ -114,7 +114,7 @@ export namespace ClientCommunication {
     tr: string;
     tc: string;
     is: string;
-    ci: string;
+    ci?: string;
   }
 
   export interface ValidationError {

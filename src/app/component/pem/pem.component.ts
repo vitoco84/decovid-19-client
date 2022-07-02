@@ -5,9 +5,9 @@ import {ErrorHandlerService} from '../../service/error-handler.service';
 
 @Component({
   selector: 'app-pem-data',
-  templateUrl: './pem-data.component.html'
+  templateUrl: './pem.component.html'
 })
-export class PemDataComponent {
+export class PemComponent {
   pemCertServerResponse: ClientCommunication.PEMCertServerResponse;
 
   constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}

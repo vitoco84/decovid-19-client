@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ClientCommunication} from '../server/clientCommunication';
+import HcertContentDTO = ClientCommunication.HcertContentDTO;
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class HcertService {
   private static PEM_URL = 'decovid19/hcert/qrcode/pem';
   private static HCERT_VERIFY_URL = 'decovid19/hcert/verify';
   private static QR_CODE_URL_CLIENT = 'decovid19/hcert/qrcode/url/client';
+  private static QR_CODE_TEST_COVID_CLIENT = 'decovid19/hcert/qrcode/hcert/client';
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -40,6 +42,13 @@ export class HcertService {
 
   createURLQRCode(qrCodeServerRequest: ClientCommunication.QRCodeServerRequest): Observable<string> {
     return this.http.post(HcertService.QR_CODE_URL_CLIENT, qrCodeServerRequest, {
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      responseType: 'text'
+    });
+  }
+
+  createTestCovidQRCode(hcertContentDTO: HcertContentDTO): Observable<string> {
+    return this.http.post(HcertService.QR_CODE_TEST_COVID_CLIENT, hcertContentDTO, {
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
       responseType: 'text'
     });

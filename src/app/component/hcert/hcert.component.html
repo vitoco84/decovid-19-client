@@ -1,0 +1,29 @@
+<div class="container mt-3">
+  <div class="row d-flex justify-content-center">
+    <section class="text-sm-start">
+      <div>
+        <label for="qrCodeFile" class="form-label m-2">Covid-19 QR Code Upload</label>
+        <input class="form-control form-control-sm m-2" type="file" id="qrCodeFile" (change)="decodeHealthCertificateContentFromFile($event)" />
+        <button type="submit" class="btn btn-light btn-sm m-2" (click)="verifyHealthCertificate()">Verify Certificate</button>
+      </div>
+
+      <div>
+        <label for="hcertPrefixString" class="form-label m-2">Covid-19 QR Code Hcert Prefix Upload</label>
+        <input class="form-control form-control-sm m-2" type="text" id="hcertPrefixString" placeholder="HCERT Prefix" #hcertPrefixInput />
+        <button type="submit" class="btn btn-light btn-sm m-2" (click)="decodeHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
+      </div>
+
+      <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
+      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
+
+      <div class="d-sm-flex align-items-center justify-content-between">
+        <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />
+        <pre class="text-warning m-2"> {{ hcertServerResponse | json }}</pre>
+      </div>
+
+      <div class="d-sm-flex align-items-center justify-content-between">
+        <pre class="text-warning m-2"> {{ hcertVerificationServerResponse | json }}</pre>
+      </div>
+    </section>
+  </div>
+</div>

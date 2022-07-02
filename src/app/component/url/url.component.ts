@@ -5,9 +5,9 @@ import {ClientCommunication} from '../../server/clientCommunication';
 
 @Component({
   selector: 'app-url-data',
-  templateUrl: './url-data.component.html'
+  templateUrl: './url.component.html'
 })
-export class UrlDataComponent {
+export class UrlComponent {
   private static IMAGE_BASE_64_PNG = 'data:image/png;base64,';
 
   urlQrCodeResponse: string | undefined;
@@ -25,7 +25,7 @@ export class UrlDataComponent {
         },
         next: res => {
           this.errorHandlerService.cleanupErrors();
-          this.urlQrCodeResponse = UrlDataComponent.IMAGE_BASE_64_PNG + res;
+          this.urlQrCodeResponse = UrlComponent.IMAGE_BASE_64_PNG + res;
         }
       });
     }
