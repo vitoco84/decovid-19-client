@@ -26,10 +26,10 @@ jobs:
         run: npm install
 
       - name: Test
-        run: npm run test
+        run: npm run test --continue
 
       - name: Linters and Prettier
-        run: npm run all-lints
+        run: npm run all-lints --continue
 
       - name: SonarCloud Test Scan
         uses: SonarSource/sonarcloud-github-action@master
