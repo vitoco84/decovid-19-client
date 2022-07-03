@@ -1,100 +1,114 @@
 <div class="container mt-3">
-  <div class="row d-flex justify-content-center">
+  <div class="justify-content-center">
     <section class="text-sm-start">
       <form #testCovidForm="ngForm" (ngSubmit)="createTestCovidQRCode(testCovidForm)">
-        <div class="form-group">
-          <label for="surname" class="form-label m-2">Surname</label>
-          <input class="form-control form-control-sm m-2" type="text" id="surname" placeholder="Surname" required [(ngModel)]="hcertHolder.fn" name="surname" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="surname" class="form-label">Surname</label>
+            <input class="form-control form-control-sm" type="text" id="surname" placeholder="Surname" required [(ngModel)]="hcertHolder.fn" name="surname" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="forname" class="form-label">Forname</label>
+            <input class="form-control form-control-sm" type="text" id="forname" placeholder="Forname" required [(ngModel)]="hcertHolder.gn" name="forname" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="forname" class="form-label m-2">Forname</label>
-          <input class="form-control form-control-sm m-2" type="text" id="forname" placeholder="Forname" required [(ngModel)]="hcertHolder.gn" name="forname" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input class="form-control form-control-sm" type="date" id="dob" placeholder="Date of Birth Format" required [(ngModel)]="hcertContentDTO.dob" name="dob" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="version" class="form-label">Version</label>
+            <input class="form-control form-control-sm" type="text" id="version" placeholder="Version" required [(ngModel)]="hcertContentDTO.ver" name="ver" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="dob" class="form-label m-2">Date of Birth</label>
-          <input class="form-control form-control-sm m-2" type="date" id="dob" placeholder="Date of Birth Format" required [(ngModel)]="hcertContentDTO.dob" name="dob" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="target" class="form-label">Target</label>
+            <input class="form-control form-control-sm" type="text" id="target" placeholder="Target" required [(ngModel)]="hcertContentDTO.t[0].tg" name="target" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="country" class="form-label">Country</label>
+            <input class="form-control form-control-sm" type="text" id="country" placeholder="Country" required [(ngModel)]="hcertContentDTO.t[0].co" name="country" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="version" class="form-label m-2">Version</label>
-          <input class="form-control form-control-sm m-2" type="text" id="version" placeholder="Version" required [(ngModel)]="hcertContentDTO.ver" name="ver" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="typeOfTest" class="form-label">Type of Test</label>
+            <input class="form-control form-control-sm" type="text" id="typeOfTest" placeholder="Type of Test" required [(ngModel)]="hcertContentDTO.t[0].tt" name="typeOfTest" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="nucleicAcidAmplName" class="form-label">Test Name of the Nucleic Acid Amplification Test</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="nucleicAcidAmplName"
+              placeholder="Test Name of the Nucleic Acid Amplification Test"
+              required
+              [(ngModel)]="hcertContentDTO.t[0].nm"
+              name="nucleicAcidAmplName"
+            />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="target" class="form-label m-2">Target</label>
-          <input class="form-control form-control-sm m-2" type="text" id="target" placeholder="Target" required [(ngModel)]="hcertContentDTO.t[0].tg" name="target" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="testDeviceManufacturer" class="form-label">Rapid Antigen Test (RAT) Device Identifier</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="testDeviceManufacturer"
+              placeholder="Rapid Antigen Test (RAT) Device Identifier"
+              required
+              [(ngModel)]="hcertContentDTO.t[0].ma"
+              name="testDeviceManufacturer"
+            />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="sampleCollectionDate" class="form-label">Sample Collection Date Format</label>
+            <input
+              class="form-control form-control-sm"
+              type="date"
+              id="sampleCollectionDate"
+              placeholder="Sample Collection Date Format"
+              required
+              [(ngModel)]="hcertContentDTO.t[0].sc"
+              name="sampleCollectionDate"
+            />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="country" class="form-label m-2">Country</label>
-          <input class="form-control form-control-sm m-2" type="text" id="country" placeholder="Country" required [(ngModel)]="hcertContentDTO.t[0].co" name="country" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="testResult" class="form-label">Test Result</label>
+            <input class="form-control form-control-sm" type="text" id="testResult" placeholder="Test Result" required [(ngModel)]="hcertContentDTO.t[0].tr" name="testResult" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="testingCentre" class="form-label">Testing Centre</label>
+            <input class="form-control form-control-sm" type="text" id="testingCentre" placeholder="Testing Centre" required [(ngModel)]="hcertContentDTO.t[0].tc" name="testingCentre" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="typeOfTest" class="form-label m-2">Type of Test</label>
-          <input class="form-control form-control-sm m-2" type="text" id="typeOfTest" placeholder="Type of Test" required [(ngModel)]="hcertContentDTO.t[0].tt" name="typeOfTest" />
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="issuer" class="form-label">Issuer</label>
+            <input class="form-control form-control-sm" type="text" id="issuer" placeholder="Issuer" required [(ngModel)]="hcertContentDTO.t[0].is" name="issuer" />
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="nucleicAcidAmplName" class="form-label m-2">Test Name of the Nucleic Acid Amplification Test</label>
-          <input
-            class="form-control form-control-sm m-2"
-            type="text"
-            id="nucleicAcidAmplName"
-            placeholder="Test Name of the Nucleic Acid Amplification Test"
-            required
-            [(ngModel)]="hcertContentDTO.t[0].nm"
-            name="nucleicAcidAmplName"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="testDeviceManufacturer" class="form-label m-2">Rapid Antigen Test (RAT) Device Identifier</label>
-          <input
-            class="form-control form-control-sm m-2"
-            type="text"
-            id="testDeviceManufacturer"
-            placeholder="Rapid Antigen Test (RAT) Device Identifier"
-            required
-            [(ngModel)]="hcertContentDTO.t[0].ma"
-            name="testDeviceManufacturer"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="sampleCollectionDate" class="form-label m-2">Sample Collection Date Format</label>
-          <input
-            class="form-control form-control-sm m-2"
-            type="date"
-            id="sampleCollectionDate"
-            placeholder="Sample Collection Date Format"
-            required
-            [(ngModel)]="hcertContentDTO.t[0].sc"
-            name="sampleCollectionDate"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="testResult" class="form-label m-2">Test Result</label>
-          <input class="form-control form-control-sm m-2" type="text" id="testResult" placeholder="Test Result" required [(ngModel)]="hcertContentDTO.t[0].tr" name="testResult" />
-        </div>
-
-        <div class="form-group">
-          <label for="testingCentre" class="form-label m-2">Testing Centre</label>
-          <input class="form-control form-control-sm m-2" type="text" id="testingCentre" placeholder="Testing Centre" required [(ngModel)]="hcertContentDTO.t[0].tc" name="testingCentre" />
-        </div>
-
-        <div class="form-group">
-          <label for="issuer" class="form-label m-2">Issuer</label>
-          <input class="form-control form-control-sm m-2" type="text" id="issuer" placeholder="Issuer" required [(ngModel)]="hcertContentDTO.t[0].is" name="issuer" />
-        </div>
-
-        <button type="submit" [disabled]="!testCovidForm.valid" class="btn btn-light btn-sm m-2">Create Hcert Test QR Code</button>
+        <button type="submit" [disabled]="!testCovidForm.valid" class="btn btn-light btn-sm col-md-6 mt-4 m-2">Create Hcert Test QR Code</button>
       </form>
 
-      <button type="submit" class="btn btn-light btn-sm m-2" (click)="resetForm(testCovidForm)">Reset</button>
+      <button type="submit" class="btn btn-light btn-sm col-md-6  m-2" (click)="resetForm(testCovidForm)">Reset</button>
 
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
       <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>

@@ -1,16 +1,16 @@
 <div class="container mt-3">
   <div class="row d-flex justify-content-center">
     <section class="text-sm-start">
-      <div>
-        <label for="qrCodeFile" class="form-label m-2">Covid-19 QR Code Upload</label>
-        <input class="form-control form-control-sm m-2" type="file" id="qrCodeFile" (change)="decodeHealthCertificateContentFromFile($event)" />
-        <button type="submit" class="btn btn-light btn-sm m-2" (click)="verifyHealthCertificate()">Verify Certificate</button>
+      <div class="m-2">
+        <label for="qrCodeFile" class="form-label">Covid-19 QR Code Upload</label>
+        <input class="form-control form-control-sm" type="file" id="qrCodeFile" (change)="decodeHealthCertificateContentFromFile($event)" />
+        <button type="button" class="btn btn-light btn-block btn-sm mt-2" (click)="verifyHealthCertificate()">Verify Certificate</button>
       </div>
 
-      <div>
-        <label for="hcertPrefixString" class="form-label m-2">Covid-19 QR Code Hcert Prefix Upload</label>
-        <input class="form-control form-control-sm m-2" type="text" id="hcertPrefixString" placeholder="HCERT Prefix" #hcertPrefixInput />
-        <button type="submit" class="btn btn-light btn-sm m-2" (click)="decodeHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
+      <div class="m-2">
+        <label for="hcertPrefixString" class="form-label">Covid-19 QR Code Hcert Prefix Upload</label>
+        <input class="form-control form-control-sm" type="text" id="hcertPrefixString" placeholder="HCERT Prefix" #hcertPrefixInput />
+        <button type="submit" class="btn btn-light btn-sm mt-2" (click)="decodeHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
       </div>
 
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
