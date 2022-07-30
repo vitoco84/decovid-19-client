@@ -1,0 +1,166 @@
+<div class="container mt-3">
+  <div class="row d-flex justify-content-center">
+    <section class="text-sm-start">
+      <div class="m-2">
+        <label for="pemString" class="form-label">Covid-19 PEM Certificate</label>
+        <input class="form-control form-control-sm" type="text" id="pemString" placeholder="PEM Certificate" #pemInput />
+        <button type="submit" class="btn btn-light btn-sm mt-2" (click)="decodeX509Certificate(pemInput.value)">Decode Certificate</button>
+      </div>
+
+      <div class="form-check form-switch m-2">
+        <input class="form-check-input" type="checkbox" id="pemStringFormatted" (click)="switchView()" />
+        <label class="form-check-label" for="pemStringFormatted">Human Readable</label>
+      </div>
+
+      <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
+      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
+
+      <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
+        <pre class="text-warning m-2"> {{ pemCertServerResponse | json }}</pre>
+      </div>
+      <button *ngIf="!isSwitched && pemCertServerResponse" class="btn btn-light btn-sm m-2" ngxClipboard [cbContent]="pemCertServerResponseJson">Copy</button>
+
+      <div *ngIf="isSwitched && pemCertServerResponse && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse">
+        <div class="d-flex col-md-6 m-2 mt-4">
+          <h4>PEM Certificate Content</h4>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="publicKey" class="form-label">PublicKey</label>
+            <input class="form-control form-control-sm" type="text" id="PublicKey" placeholder="PublicKey" required [(ngModel)]="pemCertServerResponse.publicKey" name="publicKey" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="subject" class="form-label">Subject</label>
+            <input class="form-control form-control-sm" type="text" id="subject" placeholder="Subject" required [(ngModel)]="pemCertServerResponse.subject" name="Subject" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="signatureAlgorithm" class="form-label">Signature Algorithm</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="signatureAlgorithm"
+              placeholder="Signature Algorithm"
+              required
+              [(ngModel)]="pemCertServerResponse.signatureAlgorithm"
+              name="Signature Algorithm"
+            />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="validTo" class="form-label">Valid To</label>
+            <input class="form-control form-control-sm" type="text" id="validTo" placeholder="Valid To" required [(ngModel)]="pemCertServerResponse.validTo" name="Valid To" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="validFrom" class="form-label">Valid From</label>
+            <input class="form-control form-control-sm" type="text" id="validFrom" placeholder="Valid From" required [(ngModel)]="pemCertServerResponse.validFrom" name="Valid From" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="serialNumber" class="form-label">Serial Number</label>
+            <input class="form-control form-control-sm" type="text" id="serialNumber" placeholder="Serial Number" required [(ngModel)]="pemCertServerResponse.serialNumber" name="Serial Number" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="issuer" class="form-label">Issuer</label>
+            <input class="form-control form-control-sm" type="text" id="issuer" placeholder="Issuer" required [(ngModel)]="pemCertServerResponse.issuer" name="issuer" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="signature" class="form-label">Signature</label>
+            <input class="form-control form-control-sm" type="text" id="signature" placeholder="Signature" required [(ngModel)]="pemCertServerResponse.signature" name="Signature" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="isValid" class="form-label">Is Valid</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="isValid"
+              placeholder="Is Valid"
+              required
+              [style.color]="pemCertServerResponse.isValid === true ? 'green' : 'red'"
+              [(ngModel)]="pemCertServerResponse.isValid"
+              name="Is Valid"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex col-md-6 m-2 mt-4">
+          <h4>Public Key Params</h4>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="algo" class="form-label">Algo</label>
+            <input class="form-control form-control-sm" type="text" id="algo" placeholder="Algo" required [(ngModel)]="pemCertServerResponse.publicKeyParams.algo" name="Algo" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="bitLength" class="form-label">Bit Length</label>
+            <input class="form-control form-control-sm" type="text" id="bitLength" placeholder="Bit Length" required [(ngModel)]="pemCertServerResponse.publicKeyParams.bitLength" name="Bit Length" />
+          </div>
+        </div>
+
+        <div *ngIf="pemCertServerResponse.publicKeyParams.modulus" class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="modulus" class="form-label">Modulus</label>
+            <input class="form-control form-control-sm" type="text" id="modulus" placeholder="Modulus" required [(ngModel)]="pemCertServerResponse.publicKeyParams.modulus" name="Modulus" />
+          </div>
+
+          <div *ngIf="pemCertServerResponse.publicKeyParams.publicExponent" class="form-group col-md-6 m-2">
+            <label for="publicExponent" class="form-label">Public Exponent</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="publicExponent"
+              placeholder="Public Exponent"
+              required
+              [(ngModel)]="pemCertServerResponse.publicKeyParams.publicExponent"
+              name="Public Exponent"
+            />
+          </div>
+        </div>
+
+        <div *ngIf="pemCertServerResponse.publicKeyParams.publicXCoord" class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="publicXCoord" class="form-label">Public XCoord</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="publicXCoord"
+              placeholder="Public XCoord"
+              required
+              [(ngModel)]="pemCertServerResponse.publicKeyParams.publicXCoord"
+              name="Public XCoord"
+            />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="publicYCoord" class="form-label">Public YCoord</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="publicYCoord"
+              placeholder="Public YCoord"
+              required
+              [(ngModel)]="pemCertServerResponse.publicKeyParams.publicYCoord"
+              name="Public YCoord"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

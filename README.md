@@ -1,5 +1,4 @@
-[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=vitoco84_decovid-19-client)](https://sonarcloud.io/summary/new_code?id=vitoco84_decovid-19-client)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=vitoco84_decovid-19-client&metric=coverage)](https://sonarcloud.io/component_measures/metric/coverage/list?id=vitoco84_decovid-19-client)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vitoco84_decovid-19-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vitoco84_decovid-19-client)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=vitoco84_decovid-19-client&metric=bugs)](https://sonarcloud.io/component_measures/metric/reliability_rating/list?id=vitoco84_decovid-19-client)
 ![Known Vulnerabilities](https://snyk.io/test/github/vitoco84/decovid-19-client/badge.svg)
 ![CI decovid-19-client](https://github.com/vitoco84/decovid-19-client/actions/workflows/ci-decovid-19-client.yml/badge.svg)
@@ -16,9 +15,12 @@
 > Run: `npm install`
 
 # Getting it Running
-
-> Run from terminal with: `ng serve`. Navigate to [http://localhost:4200/](http://localhost:4200/). The application will automatically reload if you change any of the source files.
+> Start `decovid-19-core` Spring Boot Java Application.
+> 
+> Run from terminal with: `npm run start`. Navigate to [http://localhost:4200/](http://localhost:4200/). The application will automatically reload if you change any of the source files.
 
 # Running Tests
-
 > Run `npm run test` to execute all tests via [Karma](https://karma-runner.github.io).
+
+# Running Linters
+> Run `npm run all-lints` to execute Linting.
