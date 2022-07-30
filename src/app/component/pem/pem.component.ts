@@ -9,6 +9,8 @@ import {ErrorHandlerService} from '../../service/error-handler.service';
 })
 export class PemComponent {
   pemCertServerResponse: ClientCommunication.PEMCertServerResponse;
+  pemCertServerResponseJson: string;
+  isSwitched = false;
 
   constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
 
@@ -24,8 +26,13 @@ export class PemComponent {
         next: res => {
           this.errorHandlerService.cleanupErrors();
           this.pemCertServerResponse = res;
+          this.pemCertServerResponseJson = JSON.stringify(this.pemCertServerResponse, null, 2);
         }
       });
     }
+  }
+
+  switchView(): void {
+    this.isSwitched = !this.isSwitched;
   }
 }

@@ -16,12 +16,13 @@
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
       <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
 
-      <div class="d-sm-flex align-items-center justify-content-between">
+      <div *ngIf="!errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
         <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />
         <pre class="text-warning m-2"> {{ hcertServerResponse | json }}</pre>
+        <button *ngIf="hcertServerResponse" class="btn btn-light btn-sm m-2" ngxClipboard [cbContent]="hcertServerResponseJson">Copy</button>
       </div>
 
-      <div class="d-sm-flex align-items-center justify-content-between">
+      <div *ngIf="!errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
         <pre class="text-warning m-2"> {{ hcertVerificationServerResponse | json }}</pre>
       </div>
     </section>

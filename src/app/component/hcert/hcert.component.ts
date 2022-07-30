@@ -9,6 +9,7 @@ import {ErrorHandlerService} from '../../service/error-handler.service';
 })
 export class HcertComponent {
   hcertServerResponse: ClientCommunication.HcertServerResponse;
+  hcertServerResponseJson: string;
   hcertVerificationServerResponse: ClientCommunication.HcertVerificationServerResponse;
 
   constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
@@ -21,8 +22,7 @@ export class HcertComponent {
           this.errorHandlerService.setErrors(err);
         },
         next: res => {
-          this.errorHandlerService.cleanupErrors();
-          this.hcertServerResponse = res;
+          this.setHcertServerResponse(res);
         }
       });
     }
@@ -38,11 +38,16 @@ export class HcertComponent {
           this.errorHandlerService.setErrors(err);
         },
         next: res => {
-          this.errorHandlerService.cleanupErrors();
-          this.hcertServerResponse = res;
+          this.setHcertServerResponse(res);
         }
       });
     }
+  }
+
+  private setHcertServerResponse(res: ClientCommunication.HcertServerResponse): void {
+    this.errorHandlerService.cleanupErrors();
+    this.hcertServerResponse = res;
+    this.hcertServerResponseJson = JSON.stringify(this.hcertServerResponse, null, 2);
   }
 
   verifyHealthCertificate(): void {
