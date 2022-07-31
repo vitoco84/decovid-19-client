@@ -1,8 +1,12 @@
 <div class="container mt-3">
   <div class="row d-flex justify-content-center">
     <section class="text-sm-start">
+      <div class="m-2 mt-4 mb-4">
+        <h4>PEM Decoder</h4>
+      </div>
+
       <div class="m-2">
-        <label for="pemString" class="form-label">Covid-19 PEM Certificate</label>
+        <label for="pemString" class="form-label">PEM Certificate</label>
         <input class="form-control form-control-sm" type="text" id="pemString" placeholder="PEM Certificate" #pemInput />
         <button type="submit" class="btn btn-light btn-sm mt-2" (click)="decodeX509Certificate(pemInput.value)">Decode Certificate</button>
       </div>
@@ -15,16 +19,16 @@
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
       <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
 
+      <div *ngIf="pemCertServerResponse" class="d-flex col-md-6 m-2 mt-4">
+        <h4>PEM Certificate Content</h4>
+      </div>
+
       <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
         <pre class="text-warning m-2"> {{ pemCertServerResponse | json }}</pre>
       </div>
       <button *ngIf="!isSwitched && pemCertServerResponse" class="btn btn-light btn-sm m-2" ngxClipboard [cbContent]="pemCertServerResponseJson">Copy</button>
 
       <div *ngIf="isSwitched && pemCertServerResponse && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse">
-        <div class="d-flex col-md-6 m-2 mt-4">
-          <h4>PEM Certificate Content</h4>
-        </div>
-
         <div class="d-flex">
           <div class="form-group col-md-6 m-2">
             <label for="publicKey" class="form-label">PublicKey</label>

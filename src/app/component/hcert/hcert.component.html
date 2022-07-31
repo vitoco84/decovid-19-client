@@ -1,10 +1,24 @@
 <div class="container mt-3">
   <div class="row d-flex justify-content-center">
     <section class="text-sm-start">
+      <div class="m-2 mt-4 mb-4">
+        <h4>Health Certificate Decoder</h4>
+      </div>
+
       <div class="m-2">
         <label for="qrCodeFile" class="form-label">Covid-19 QR Code Upload</label>
         <input class="form-control form-control-sm" type="file" id="qrCodeFile" (change)="decodeHealthCertificateContentFromFile($event)" />
-        <button type="button" class="btn btn-light btn-block btn-sm mt-2" (click)="verifyHealthCertificate()">Verify Certificate</button>
+        <button type="button" class="btn btn-light btn-block btn-sm mt-2" (click)="verifyHealthCertificate()">Verify EU Certificate</button>
+      </div>
+
+      <div class="d-flex col-md-12">
+        <div class="form-group col-md-6 m-2">
+          <input class="form-control form-control-sm" type="text" id="bearerToken" placeholder="Bearer Token Required for Swiss Health Certificates Verification" required #bearerTokenInput />
+        </div>
+
+        <div class="form-group col-md-3 m-2">
+          <button type="button" class="btn btn-light btn-block btn-sm" (click)="verifySwissHealthCertificate(bearerTokenInput.value)">Verify Swiss Certificate</button>
+        </div>
       </div>
 
       <div class="m-2">
@@ -13,17 +27,451 @@
         <button type="submit" class="btn btn-light btn-sm mt-2" (click)="decodeHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
       </div>
 
+      <div class="form-check form-switch m-2">
+        <input class="form-check-input" type="checkbox" id="pemStringFormatted" (click)="switchView()" />
+        <label class="form-check-label" for="pemStringFormatted">Human Readable</label>
+      </div>
+
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
       <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
 
-      <div *ngIf="!errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
-        <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />
-        <pre class="text-warning m-2"> {{ hcertServerResponse | json }}</pre>
-        <button *ngIf="hcertServerResponse" class="btn btn-light btn-sm m-2" ngxClipboard [cbContent]="hcertServerResponseJson">Copy</button>
+      <div *ngIf="hcertServerResponse" class="d-flex col-md-6 m-2 mt-4">
+        <h4>Health Certificate Content</h4>
       </div>
 
-      <div *ngIf="!errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
+      <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
+        <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />
+        <pre class="text-warning m-2"> {{ hcertServerResponse | json }}</pre>
+      </div>
+      <button *ngIf="!isSwitched && hcertServerResponse" class="btn btn-light btn-sm m-2" ngxClipboard [cbContent]="hcertServerResponseJson">Copy</button>
+
+      <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
         <pre class="text-warning m-2"> {{ hcertVerificationServerResponse | json }}</pre>
+      </div>
+
+      <div *ngIf="isSwitched && hcertServerResponse && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse">
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="certificateType" class="form-label">Certificate Type</label>
+            <input class="form-control form-control-sm" type="text" id="certificateType" placeholder="Certificate Type" required [(ngModel)]="certificateType" name="certificateType" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="schemaVersion" class="form-label">Schema Version</label>
+            <input class="form-control form-control-sm" type="text" id="schemaVersion" placeholder="Schema Version" required [(ngModel)]="hcertServerResponse.hcertContent.ver" name="schemaVersion" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-12 m-2">
+            <label for="hcertPrefix" class="form-label">Hcert Raw Content</label>
+            <input class="form-control form-control-sm" type="text" id="hcertPrefix" placeholder="Hcert Raw Content" required [(ngModel)]="hcertServerResponse.hcertPrefix" name="hcertPrefix" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="forname" class="form-label">Forname</label>
+            <input class="form-control form-control-sm" type="text" id="forname" placeholder="Forname" required [(ngModel)]="hcertServerResponse.hcertContent.nam.gn" name="forname" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="surname" class="form-label">Surname</label>
+            <input class="form-control form-control-sm" type="text" id="surname" placeholder="Surname" required [(ngModel)]="hcertServerResponse.hcertContent.nam.fn" name="surname" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="standardForename" class="form-label">Standardized Forename</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="standardForename"
+              placeholder="Standardized Forename"
+              required
+              [(ngModel)]="hcertServerResponse.hcertContent.nam.gnt"
+              name="standardForename"
+            />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="standardSurname" class="form-label">Standardized Surname</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="standardSurname"
+              placeholder="Standardized Surname"
+              required
+              [(ngModel)]="hcertServerResponse.hcertContent.nam.fnt"
+              name="standardSurname"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-12 m-2">
+            <label for="dateOfBirth" class="form-label">Date of Birth</label>
+            <input class="form-control form-control-sm" type="text" id="dateOfBirth" placeholder="Date of Birth" required [(ngModel)]="hcertServerResponse.hcertContent.dob" name="dateOfBirth" />
+          </div>
+        </div>
+
+        <div *ngIf="certificateType === VACCINATION">
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="targetV" class="form-label">Disease or agent targeted</label>
+              <input class="form-control form-control-sm" type="text" id="targetV" placeholder="Disease or agent targeted" required [(ngModel)]="hcertServerResponseContent.v[0].tg" name="targetV" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="countryV" class="form-label">Country of vaccination</label>
+              <input class="form-control form-control-sm" type="text" id="countryV" placeholder="Country of vaccination" required [(ngModel)]="hcertServerResponseContent.v[0].co" name="countryV" />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="certIdentifierV" class="form-label">Unique Certificate Identifier (UVCI)</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="certIdentifierV"
+                placeholder="Unique Certificate Identifier (UVCI)"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].ci"
+                name="certIdentifierV"
+              />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="numberOfDoses" class="form-label">Number in a series of doses</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="numberOfDoses"
+                placeholder="Number in a series of doses"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].dn"
+                name="numberOfDoses"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="vaccinationDate" class="form-label">Vaccination Date</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="vaccinationDate"
+                placeholder="Vaccination Date"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].dt"
+                name="vaccinationDate"
+              />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="issuerV" class="form-label">Certificate Issuer</label>
+              <input class="form-control form-control-sm" type="text" id="issuerV" placeholder="Certificate Issuer" required [(ngModel)]="hcertServerResponseContent.v[0].is" name="issuerV" />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="manufacturer" class="form-label">Vaccine marketing authorisation holder or manufacturer</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="manufacturer"
+                placeholder="Vaccine marketing authorisation holder or manufacturer"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].ma"
+                name="manufacturer"
+              />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="vaccineProduct" class="form-label">Vaccine product</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="vaccineProduct"
+                placeholder="Vaccine product"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].mp"
+                name="vaccineProduct"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="overallNumberOfDoses" class="form-label">The overall number of doses in the series</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="overallNumberOfDoses"
+                placeholder="The overall number of doses in the series"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].sd"
+                name="overallNumberOfDoses"
+              />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="vaccineProphylaxis" class="form-label">Vaccine or prophylaxis</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="vaccineProphylaxis"
+                placeholder="Vaccine or prophylaxis"
+                required
+                [(ngModel)]="hcertServerResponseContent.v[0].vp"
+                name="vaccineProphylaxis"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="certificateType === RECOVERY">
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="targetR" class="form-label">Disease or agent targeted</label>
+              <input class="form-control form-control-sm" type="text" id="targetR" placeholder="Disease or agent targeted" required [(ngModel)]="hcertServerResponseContent.r[0].tg" name="targetR" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="countryR" class="form-label">Country of recovery</label>
+              <input class="form-control form-control-sm" type="text" id="countryR" placeholder="Country of recovery" required [(ngModel)]="hcertServerResponseContent.r[0].co" name="countryR" />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="firstPositiveDateResult" class="form-label">Date of the holder's first positive test result</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="firstPositiveDateResult"
+                placeholder="Date of the holder's first positive test result"
+                required
+                [(ngModel)]="hcertServerResponseContent.r[0].fr"
+                name="firstPositiveDateResult"
+              />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="validFrom" class="form-label">Certificate valid from</label>
+              <input class="form-control form-control-sm" type="text" id="validFrom" placeholder="Certificate valid from" required [(ngModel)]="hcertServerResponseContent.r[0].df" name="validFrom" />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="validTo" class="form-label">Certificate valid to</label>
+              <input class="form-control form-control-sm" type="text" id="validTo" placeholder="Certificate valid to" required [(ngModel)]="hcertServerResponseContent.r[0].du" name="validTo" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="issuerR" class="form-label">Certificate Issuer</label>
+              <input class="form-control form-control-sm" type="text" id="issuerR" placeholder="Certificate Issuer" required [(ngModel)]="hcertServerResponseContent.r[0].is" name="issuerR" />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="certIdentifierR" class="form-label">Unique Certificate Identifier (UVCI)</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="certIdentifierR"
+                placeholder="Unique Certificate Identifier (UVCI)"
+                required
+                [(ngModel)]="hcertServerResponseContent.r[0].ci"
+                name="certIdentifierR"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="certificateType === TESTING">
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="targetT" class="form-label">Disease or agent targeted</label>
+              <input class="form-control form-control-sm" type="text" id="targetT" placeholder="Disease or agent targeted" required [(ngModel)]="hcertServerResponseContent.t[0].tg" name="targetT" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="countryT" class="form-label">Country of test</label>
+              <input class="form-control form-control-sm" type="text" id="countryT" placeholder="Country of test" required [(ngModel)]="hcertServerResponseContent.t[0].co" name="countryT" />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="typeOfTest" class="form-label">Type of test</label>
+              <input class="form-control form-control-sm" type="text" id="typeOfTest" placeholder="Type of test" required [(ngModel)]="hcertServerResponseContent.t[0].tt" name="typeOfTest" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="nucleicAcidAmplName" class="form-label">Test name of the nucleic acid amplification test (NAAT)</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="nucleicAcidAmplName"
+                placeholder="Test name of the nucleic acid amplification test (NAAT)"
+                required
+                [(ngModel)]="hcertServerResponseContent.t[0].nm"
+                name="nucleicAcidAmplName"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="testDeviceManufacturer" class="form-label">Rapid antigen test (RAT) device identifier</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="testDeviceManufacturer"
+                placeholder="Rapid antigen test (RAT) device identifier"
+                required
+                [(ngModel)]="hcertServerResponseContent.t[0].ma"
+                name="testDeviceManufacturer"
+              />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="sampleCollectionDate" class="form-label">Date and time of the test sample collection</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="sampleCollectionDate"
+                placeholder="Date and time of the test sample collection"
+                required
+                [(ngModel)]="hcertServerResponseContent.t[0].sc"
+                name="sampleCollectionDate"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="testResult" class="form-label">Test Result</label>
+              <input class="form-control form-control-sm" type="text" id="testResult" placeholder="Test Result" required [(ngModel)]="hcertServerResponseContent.t[0].tr" name="testResult" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="testingCentre" class="form-label">Testing centre or facility</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="testingCentre"
+                placeholder="Testing centre or facility"
+                required
+                [(ngModel)]="hcertServerResponseContent.t[0].tc"
+                name="testingCentre"
+              />
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <div class="form-group col-md-6 m-2">
+              <label for="issuerT" class="form-label">Certificate Issuer</label>
+              <input class="form-control form-control-sm" type="text" id="issuerT" placeholder="Certificate Issuer" required [(ngModel)]="hcertServerResponseContent.t[0].is" name="issuerT" />
+            </div>
+
+            <div class="form-group col-md-6 m-2">
+              <label for="certIdentifierT" class="form-label">Unique Certificate Identifier (UVCI)</label>
+              <input
+                class="form-control form-control-sm"
+                type="text"
+                id="certIdentifierT"
+                placeholder="Unique Certificate Identifier (UVCI)"
+                required
+                [(ngModel)]="hcertServerResponseContent.t[0].ci"
+                name="certIdentifierT"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="m-2 mt-4 mb-4">
+          <h4>Signature Details</h4>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="hcertKID" class="form-label">Key Identifier (KID)</label>
+            <input class="form-control form-control-sm" type="text" id="hcertKID" placeholder="Key Identifier (KID)" required [(ngModel)]="hcertServerResponse.hcertKID" name="hcertKID" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="hcertAlgo" class="form-label">Algorithm</label>
+            <input class="form-control form-control-sm" type="text" id="hcertAlgo" placeholder="Algorithm" required [(ngModel)]="hcertServerResponse.hcertAlgo" name="hcertAlgo" />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="hcertIssuer" class="form-label">Issuer</label>
+            <input class="form-control form-control-sm" type="text" id="hcertIssuer" placeholder="Issuer" required [(ngModel)]="hcertServerResponse.hcertIssuer" name="hcertIssuer" />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="hcertSignature" class="form-label">Signature</label>
+            <input class="form-control form-control-sm" type="text" id="hcertSignature" placeholder="Signature" required [(ngModel)]="hcertServerResponse.hcertSignature" name="hcertSignature" />
+          </div>
+        </div>
+
+        <div class="m-2 mt-4 mb-4">
+          <h4>Health Certificate Timestamp</h4>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="hcertExpirationTime" class="form-label">Expiration Time</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="hcertExpirationTime"
+              placeholder="Expiration Time"
+              required
+              [(ngModel)]="hcertServerResponse.hcertTimeStamp.hcertExpirationTime"
+              name="hcertExpirationTime"
+            />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="hcertIssuedAtTime" class="form-label">Issued At</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="hcertIssuedAtTime"
+              placeholder="Issued At"
+              required
+              [(ngModel)]="hcertServerResponse.hcertTimeStamp.hcertIssuedAtTime"
+              name="hcertIssuedAtTime"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="isHcertExpired" class="form-label">Is Expired</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="isHcertExpired"
+              placeholder="Is Expired"
+              required
+              [style.color]="hcertServerResponse.hcertTimeStamp.isHcertExpired === true ? 'green' : 'red'"
+              [(ngModel)]="hcertServerResponse.hcertTimeStamp.isHcertExpired"
+              name="isHcertExpired"
+            />
+          </div>
+        </div>
       </div>
     </section>
   </div>

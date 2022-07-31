@@ -1,6 +1,10 @@
 <div class="container mt-3">
   <div class="row d-flex justify-content-center">
     <section class="text-sm-start">
+      <div class="m-2 mt-4 mb-4">
+        <h4>Health Certificate Encoder</h4>
+      </div>
+
       <form #testCovidForm="ngForm" (ngSubmit)="createTestCovidQRCode(testCovidForm)">
         <div class="d-flex">
           <div class="form-group col-md-6 m-2">
@@ -108,7 +112,7 @@
         <button type="submit" [disabled]="!testCovidForm.valid" class="btn btn-light btn-sm col-md-6 mt-4 m-2">Create Hcert Test QR Code</button>
       </form>
 
-      <button type="submit" class="btn btn-light btn-sm col-md-6  m-2" (click)="resetForm(testCovidForm)">Reset</button>
+      <button type="submit" class="btn btn-light btn-sm col-md-6 m-2" (click)="resetForm(testCovidForm)">Reset</button>
 
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
       <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
