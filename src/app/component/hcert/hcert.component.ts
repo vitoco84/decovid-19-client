@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {HcertService} from '../../service/hcert.service';
 import {ClientCommunication} from '../../server/clientCommunication';
 import {ErrorHandlerService} from '../../service/error-handler.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hcert-json',
@@ -18,23 +19,15 @@ export class HcertComponent {
   hcertServerResponseContent: ClientCommunication.HcertContentDTO;
   isSwitched = false;
   certificateType: string;
+  imgSrc: string;
 
-  constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
+  constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService, private sanitizer: DomSanitizer) {}
 
   decodeHealthCertificateContentFromFile(event): void {
     const file: File = event.target.files[0];
+    this.readURL(event);
     if (file) {
-      this.hcertService.decodeHealthCertificateContentFromFile(file).subscribe({
-        error: err => {
-          this.errorHandlerService.cleanupErrors();
-          this.errorHandlerService.setErrors(err);
-          this.resetHcertServerResponse();
-        },
-        next: res => {
-          this.setHcertServerResponse(res);
-          this.hcertVerificationServerResponse = null;
-        }
-      });
+      this.hcertService.decodeHealthCertificateContentFromFile(file).subscribe(this.handleServerResponse());
     }
   }
 
@@ -43,17 +36,35 @@ export class HcertComponent {
       const hcertServerRequest: ClientCommunication.HcertServerRequest = {
         hcertPrefix: hcertPrefixInput
       };
-      this.hcertService.decodeHealthCertificateContentFromPrefix(hcertServerRequest).subscribe({
-        error: err => {
-          this.errorHandlerService.cleanupErrors();
-          this.errorHandlerService.setErrors(err);
-          this.resetHcertServerResponse();
-        },
-        next: res => {
-          this.setHcertServerResponse(res);
-          this.hcertVerificationServerResponse = null;
-        }
-      });
+      this.hcertService.decodeHealthCertificateContentFromPrefix(hcertServerRequest).subscribe(this.handleServerResponse());
+    }
+  }
+
+  public sanitizeImgSrc(imgSrc: string) {
+    return this.sanitizer.bypassSecurityTrustUrl(imgSrc);
+  }
+
+  private handleServerResponse() {
+    return {
+      error: err => {
+        this.errorHandlerService.cleanupErrors();
+        this.errorHandlerService.setErrors(err);
+        this.resetHcertServerResponse();
+      },
+      next: res => {
+        this.setHcertServerResponse(res);
+        this.hcertVerificationServerResponse = null;
+      }
+    };
+  }
+
+  private readURL(event) {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        this.imgSrc = e.target.result as string;
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 

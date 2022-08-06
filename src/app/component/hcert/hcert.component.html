@@ -45,14 +45,16 @@
       </div>
 
       <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
-        <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />
+        <div *ngIf="imgSrc; else staticImage">
+          <img class="img-fluid w-20 d-none d-sm-block m-2" [src]="sanitizeImgSrc(imgSrc)" alt="uploaded-img-covid-qr-code" />
+        </div>
+        <ng-template #staticImage>
+          <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />
+        </ng-template>
+
         <pre class="text-warning m-2"> {{ hcertServerResponse | json }}</pre>
       </div>
       <button *ngIf="!isSwitched && hcertServerResponse" class="btn btn-light btn-sm m-2" ngxClipboard [cbContent]="hcertServerResponseJson">Copy</button>
-
-      <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse && hcertVerificationServerResponse" class="d-sm-flex align-items-center justify-content-between">
-        <pre class="text-warning m-2"> {{ hcertVerificationServerResponse | json }}</pre>
-      </div>
 
       <div *ngIf="isSwitched && hcertServerResponse && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse">
         <div class="d-flex">
@@ -474,6 +476,64 @@
               [style.color]="hcertServerResponse.hcertTimeStamp.isHcertExpired === true ? 'green' : 'red'"
               [(ngModel)]="hcertServerResponse.hcertTimeStamp.isHcertExpired"
               name="isHcertExpired"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="hcertVerificationServerResponse" class="d-flex col-md-6 m-2 mt-4">
+        <h4>Health Certificate Verification Content</h4>
+      </div>
+
+      <div
+        *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse && hcertVerificationServerResponse"
+        class="d-sm-flex align-items-center justify-content-between"
+      >
+        <pre class="text-warning m-2"> {{ hcertVerificationServerResponse | json }}</pre>
+      </div>
+
+      <div *ngIf="isSwitched && hcertServerResponse && hcertVerificationServerResponse && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse">
+        <div class="d-flex">
+          <div class="form-group col-md-6 m-2">
+            <label for="isHcertVerified" class="form-label">Is Hcert Verified</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="isHcertVerified"
+              placeholder="Is Hcert Verified"
+              required
+              [style.color]="hcertVerificationServerResponse.isHcertVerified === true ? 'green' : 'red'"
+              [(ngModel)]="hcertVerificationServerResponse.isHcertVerified"
+              name="isHcertVerified"
+            />
+          </div>
+
+          <div class="form-group col-md-6 m-2">
+            <label for="isTrustChainVerified" class="form-label">Is Trust Chain Verified</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="isTrustChainVerified"
+              placeholder="Is Trust Chain Verified"
+              required
+              [style.color]="hcertVerificationServerResponse.isTrustChainVerified === true ? 'green' : 'red'"
+              [(ngModel)]="hcertVerificationServerResponse.isTrustChainVerified"
+              name="isTrustChainVerified"
+            />
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="form-group col-md-12 m-2">
+            <label for="certRawContent" class="form-label">Certificate</label>
+            <input
+              class="form-control form-control-sm"
+              type="text"
+              id="certRawContent"
+              placeholder="Certificate"
+              required
+              [(ngModel)]="hcertVerificationServerResponse.certRawContent"
+              name="certRawContent"
             />
           </div>
         </div>
