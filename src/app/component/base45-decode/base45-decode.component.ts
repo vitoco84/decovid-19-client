@@ -4,30 +4,28 @@ import {ErrorHandlerService} from '../../service/error-handler.service';
 import {ClientCommunication} from '../../server/clientCommunication';
 
 @Component({
-  selector: 'app-url-data',
-  templateUrl: './url.component.html'
+  selector: 'app-base45-decode',
+  templateUrl: './base45-decode.component.html'
 })
-export class UrlComponent {
-  private static IMAGE_BASE_64_PNG = 'data:image/png;base64,';
-
-  urlQrCodeResponse: string | undefined;
+export class Base45DecodeComponent {
+  base45ServerResponse: string | undefined;
 
   constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
 
-  createURLQRCode(urlInput: string): void {
-    if (urlInput) {
-      const qrCodeServerRequest: ClientCommunication.QRCodeServerRequest = {
-        url: urlInput
+  decodeBase45(stringInput: string): void {
+    if (stringInput) {
+      const base45DecodeServerRequest: ClientCommunication.Base45DecodeServerRequest = {
+        base45Decode: stringInput
       };
-      this.hcertService.createURLQRCode(qrCodeServerRequest).subscribe({
+      this.hcertService.decodeBase45(base45DecodeServerRequest).subscribe({
         error: err => {
           this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
-          this.urlQrCodeResponse = '';
+          this.base45ServerResponse = '';
         },
         next: res => {
           this.errorHandlerService.cleanupErrors();
-          this.urlQrCodeResponse = UrlComponent.IMAGE_BASE_64_PNG + res;
+          this.base45ServerResponse = res;
         }
       });
     }

@@ -43,10 +43,10 @@ export class HcertTestComponent {
 
   createTestCovidQRCode(form: NgForm) {
     if (this.hcertContentDTO) {
-      console.log(this.hcertContentDTO);
       this.setStandardizedForAndSurname();
       this.hcertService.createTestCovidQRCode(this.hcertContentDTO).subscribe({
         error: err => {
+          this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
           this.hcertTestServerResponse = '';
         },

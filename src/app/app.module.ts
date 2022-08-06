@@ -14,9 +14,23 @@ import {DocumentationComponent} from './component/documentation/documentation.co
 import {UrlComponent} from './component/url/url.component';
 import {HcertTestComponent} from './component/hcert-test/hcert-test.component';
 import {ClipboardModule} from 'ngx-clipboard';
+import {Base45EncodeComponent} from './component/base45-encode/base45-encode.component';
+import {Base45DecodeComponent} from './component/base45-decode/base45-decode.component';
 
 @NgModule({
-  declarations: [AppComponent, HcertComponent, PemComponent, HeaderComponent, FooterComponent, AboutComponent, DocumentationComponent, UrlComponent, HcertTestComponent],
+  declarations: [
+    AppComponent,
+    HcertComponent,
+    PemComponent,
+    HeaderComponent,
+    FooterComponent,
+    AboutComponent,
+    DocumentationComponent,
+    UrlComponent,
+    HcertTestComponent,
+    Base45EncodeComponent,
+    Base45DecodeComponent
+  ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, ClipboardModule],
   providers: [],
   bootstrap: [AppComponent]

@@ -26,10 +26,13 @@ export class HcertComponent {
     if (file) {
       this.hcertService.decodeHealthCertificateContentFromFile(file).subscribe({
         error: err => {
+          this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
+          this.resetHcertServerResponse();
         },
         next: res => {
           this.setHcertServerResponse(res);
+          this.hcertVerificationServerResponse = null;
         }
       });
     }
@@ -42,13 +45,21 @@ export class HcertComponent {
       };
       this.hcertService.decodeHealthCertificateContentFromPrefix(hcertServerRequest).subscribe({
         error: err => {
+          this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
+          this.resetHcertServerResponse();
         },
         next: res => {
           this.setHcertServerResponse(res);
+          this.hcertVerificationServerResponse = null;
         }
       });
     }
+  }
+
+  private resetHcertServerResponse(): void {
+    this.hcertServerResponse = null;
+    this.hcertServerResponseJson = '';
   }
 
   private setHcertServerResponse(res: ClientCommunication.HcertServerResponse): void {
@@ -68,6 +79,7 @@ export class HcertComponent {
         };
         this.hcertService.verifyHealthCertificate(hcertVerificationServerRequest).subscribe({
           error: err => {
+            this.errorHandlerService.cleanupErrors();
             this.errorHandlerService.setErrors(err);
           },
           next: res => {
@@ -88,6 +100,7 @@ export class HcertComponent {
       };
       this.hcertService.verifyHealthCertificate(hcertVerificationServerRequest).subscribe({
         error: err => {
+          this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
         },
         next: res => {

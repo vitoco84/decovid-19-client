@@ -114,8 +114,15 @@
 
       <button type="submit" class="btn btn-light btn-sm col-md-6 m-2" (click)="resetForm(testCovidForm)">Reset</button>
 
+      <div *ngIf="errorHandlerService.error" class="m-2 text-danger">{{ errorHandlerService.error }}</div>
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
-      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
+      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">
+        <ul>
+          <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">
+            {{ errors.fieldName }}: {{ errors.message }}
+          </li>
+        </ul>
+      </div>
 
       <div *ngIf="hcertTestServerResponse">
         <img class="img-fluid w-20 m-2" src="{{ hcertTestServerResponse }}" alt="hcert-test-qr-code" />

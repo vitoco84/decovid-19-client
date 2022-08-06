@@ -16,8 +16,13 @@
         <label class="form-check-label" for="pemStringFormatted">Human Readable</label>
       </div>
 
+      <div *ngIf="errorHandlerService.error" class="m-2 text-danger">{{ errorHandlerService.error }}</div>
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
-      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
+      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">
+        <ul>
+          <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">{{ errors.fieldName }}: {{ errors.message }}</li>
+        </ul>
+      </div>
 
       <div *ngIf="pemCertServerResponse" class="d-flex col-md-6 m-2 mt-4">
         <h4>PEM Certificate Content</h4>

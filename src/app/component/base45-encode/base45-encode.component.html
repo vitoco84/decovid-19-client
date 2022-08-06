@@ -2,13 +2,13 @@
   <div class="row d-flex justify-content-center">
     <section class="text-sm-start">
       <div class="m-2 mt-4 mb-4">
-        <h4>URL QR Code Generator</h4>
+        <h4>Base45 Encoder</h4>
       </div>
 
       <div class="m-2">
-        <label for="urlString" class="form-label">URL String</label>
-        <input class="form-control form-control-sm" type="text" id="urlString" placeholder="URL String" #urlInput />
-        <button type="submit" class="btn btn-light btn-sm mt-2" (click)="createURLQRCode(urlInput.value)">Create URL QR Code</button>
+        <label for="stringInput" class="form-label">Input</label>
+        <input class="form-control form-control-sm" type="text" id="stringInput" placeholder="Input" #stringInput />
+        <button type="submit" class="btn btn-light btn-sm mt-2" (click)="encodeBase45(stringInput.value)">Encode to Base45</button>
       </div>
 
       <div *ngIf="errorHandlerService.error" class="m-2 text-danger">{{ errorHandlerService.error }}</div>
@@ -18,8 +18,10 @@
           <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">{{ errors.fieldName }}: {{ errors.message }}</li>
         </ul>
       </div>
-      <div *ngIf="urlQrCodeResponse">
-        <img class="img-fluid w-20 m-2" src="{{ urlQrCodeResponse }}" alt="url-qr-code" />
+
+      <div *ngIf="base45ServerResponse" class="m-2">
+        <label for="base45EncodedOutput" class="form-label">Base45 Encoded Output</label>
+        <textarea class="col-md-12" name="base45EncodedOutput" id="base45EncodedOutput" rows="10" [(ngModel)]="base45ServerResponse"></textarea>
       </div>
     </section>
   </div>
