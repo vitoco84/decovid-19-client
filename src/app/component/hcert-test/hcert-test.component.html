@@ -93,7 +93,11 @@
         <div class="d-flex">
           <div class="form-group col-md-6 m-2">
             <label for="testResult" class="form-label">Test Result</label>
-            <input class="form-control form-control-sm" type="text" id="testResult" placeholder="Test Result" required [(ngModel)]="hcertContentDTO.t[0].tr" name="testResult" />
+            <select class="form-select form-select-sm" name="testResult" id="testResult" required [(ngModel)]="hcertContentDTO.t[0].tr">
+              <option value="" disabled>Select Test Result</option>
+              <option value="Detected">Detected</option>
+              <option value="Not Detected">Not Detected</option>
+            </select>
           </div>
 
           <div class="form-group col-md-6 m-2">
@@ -118,9 +122,7 @@
       <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
       <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">
         <ul>
-          <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">
-            {{ errors.fieldName }}: {{ errors.message }}
-          </li>
+          <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">{{ errors.fieldName }}: {{ errors.message }}</li>
         </ul>
       </div>
 

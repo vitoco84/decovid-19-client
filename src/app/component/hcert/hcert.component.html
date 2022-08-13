@@ -46,7 +46,7 @@
 
       <div *ngIf="!isSwitched && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse" class="d-sm-flex align-items-center justify-content-between">
         <div *ngIf="imgSrc; else staticImage">
-          <img class="img-fluid w-20 d-none d-sm-block m-2" [src]="sanitizeImgSrc(imgSrc)" alt="uploaded-img-covid-qr-code" />
+          <img class="img-fluid w-20 d-none d-sm-block m-2" [src]="imgSrc" alt="uploaded-img-covid-qr-code" />
         </div>
         <ng-template #staticImage>
           <img class="img-fluid w-20 d-none d-sm-block m-2" src="assets/covidFakeQRCode.png" alt="test-covid-qr-code" />

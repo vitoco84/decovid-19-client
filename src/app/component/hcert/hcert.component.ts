@@ -40,10 +40,6 @@ export class HcertComponent {
     }
   }
 
-  public sanitizeImgSrc(imgSrc: string) {
-    return this.sanitizer.bypassSecurityTrustUrl(imgSrc);
-  }
-
   private handleServerResponse() {
     return {
       error: err => {
