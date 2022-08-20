@@ -16,6 +16,7 @@ export class HcertComponent {
   hcertServerResponse: ClientCommunication.HcertServerResponse;
   hcertServerResponseJson: string;
   hcertVerificationServerResponse: ClientCommunication.HcertVerificationServerResponse;
+  hcertVerificationServerResponseJson: string;
   hcertServerResponseContent: ClientCommunication.HcertContentDTO;
   isSwitched = false;
   certificateType: string;
@@ -27,7 +28,7 @@ export class HcertComponent {
     const file: File = event.target.files[0];
     this.readURL(event);
     if (file) {
-      this.hcertService.decodeHealthCertificateContentFromFile(file).subscribe(this.handleServerResponse());
+      this.hcertService.decodeHealthCertificateContentFromFile(file).subscribe(this.handleServerResponse(null));
     }
   }
 
@@ -36,11 +37,11 @@ export class HcertComponent {
       const hcertServerRequest: ClientCommunication.HcertServerRequest = {
         hcertPrefix: hcertPrefixInput
       };
-      this.hcertService.decodeHealthCertificateContentFromPrefix(hcertServerRequest).subscribe(this.handleServerResponse());
+      this.hcertService.decodeHealthCertificateContentFromPrefix(hcertServerRequest).subscribe(this.handleServerResponse(hcertPrefixInput));
     }
   }
 
-  private handleServerResponse() {
+  private handleServerResponse(hcertPrefixInput: string) {
     return {
       error: err => {
         this.errorHandlerService.cleanupErrors();
@@ -50,6 +51,9 @@ export class HcertComponent {
       next: res => {
         this.setHcertServerResponse(res);
         this.hcertVerificationServerResponse = null;
+        if (hcertPrefixInput) {
+          this.imgSrc = '';
+        }
       }
     };
   }
@@ -66,6 +70,7 @@ export class HcertComponent {
 
   private resetHcertServerResponse(): void {
     this.hcertServerResponse = null;
+    this.hcertVerificationServerResponse = null;
     this.hcertServerResponseJson = '';
   }
 
@@ -86,12 +91,10 @@ export class HcertComponent {
         };
         this.hcertService.verifyHealthCertificate(hcertVerificationServerRequest).subscribe({
           error: err => {
-            this.errorHandlerService.cleanupErrors();
-            this.errorHandlerService.setErrors(err);
+            this.resetHcerVerificationServerResponse(err);
           },
           next: res => {
-            this.errorHandlerService.cleanupErrors();
-            this.hcertVerificationServerResponse = res;
+            this.setHcertVerificationServerResponse(res);
           }
         });
       }
@@ -107,15 +110,26 @@ export class HcertComponent {
       };
       this.hcertService.verifyHealthCertificate(hcertVerificationServerRequest).subscribe({
         error: err => {
-          this.errorHandlerService.cleanupErrors();
-          this.errorHandlerService.setErrors(err);
+          this.resetHcerVerificationServerResponse(err);
         },
         next: res => {
-          this.errorHandlerService.cleanupErrors();
-          this.hcertVerificationServerResponse = res;
+          this.setHcertVerificationServerResponse(res);
         }
       });
     }
+  }
+
+  private resetHcerVerificationServerResponse(err): void {
+    this.errorHandlerService.cleanupErrors();
+    this.errorHandlerService.setErrors(err);
+    this.hcertVerificationServerResponse = null;
+    this.hcertVerificationServerResponseJson = '';
+  }
+
+  private setHcertVerificationServerResponse(res: ClientCommunication.HcertVerificationServerResponse): void {
+    this.errorHandlerService.cleanupErrors();
+    this.hcertVerificationServerResponse = res;
+    this.hcertVerificationServerResponseJson = JSON.stringify(this.hcertVerificationServerResponse, null, 2);
   }
 
   private setCertificateType(): void {

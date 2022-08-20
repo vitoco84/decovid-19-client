@@ -34,5 +34,6 @@ export class ErrorHandlerService {
     this.error = '';
     this.errorMessage = '';
     this.validationErrorServerResponse = null;
+    this.httpErrorResponse = null;
   }
 }
