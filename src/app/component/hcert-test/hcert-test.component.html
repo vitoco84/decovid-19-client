@@ -1,78 +1,91 @@
 <div class="container mt-3">
-  <div class="row d-flex justify-content-center">
+  <div class="row justify-content-center">
     <section class="text-sm-start">
-      <form #testCovidForm="ngForm" (ngSubmit)="createTestCovidQRCode(testCovidForm)">
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+      <div class="row mb-3 mt-3">
+        <div class="col-12">
+          <h4>Health Certificate Encoder</h4>
+          <p class="mt-4 mb-4">
+            Here you can generate a fake EU Digital COVID Test Health Certificate for testing and research purposes only.
+            <br />
+            The signature will be a fake one and i hope that it wont be accepted by any verification application out there.
+          </p>
+        </div>
+      </div>
+
+      <form #testCovidForm="ngForm" (ngSubmit)="createTestCovidQRCode()">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="surname" class="form-label">Surname</label>
             <input class="form-control form-control-sm" type="text" id="surname" placeholder="Surname" required [(ngModel)]="hcertHolder.fn" name="surname" />
           </div>
 
-          <div class="form-group col-md-6 m-2">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="forname" class="form-label">Forname</label>
             <input class="form-control form-control-sm" type="text" id="forname" placeholder="Forname" required [(ngModel)]="hcertHolder.gn" name="forname" />
           </div>
         </div>
 
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="dob" class="form-label">Date of Birth</label>
             <input class="form-control form-control-sm" type="date" id="dob" placeholder="Date of Birth Format" required [(ngModel)]="hcertContentDTO.dob" name="dob" />
           </div>
 
-          <div class="form-group col-md-6 m-2">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="version" class="form-label">Version</label>
-            <input class="form-control form-control-sm" type="text" id="version" placeholder="Version" required [(ngModel)]="hcertContentDTO.ver" name="ver" />
+            <select class="form-select form-select-sm" name="ver" id="version" required [(ngModel)]="hcertContentDTO.ver">
+              <option value="" disabled>Select Schema Version</option>
+              <option value="1.1.0">1.1.0</option>
+              <option value="1.2.0">1.2.0</option>
+              <option value="1.3.0">1.3.0</option>
+            </select>
           </div>
         </div>
 
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="target" class="form-label">Target</label>
-            <input class="form-control form-control-sm" type="text" id="target" placeholder="Target" required [(ngModel)]="hcertContentDTO.t[0].tg" name="target" />
+            <input class="form-control form-control-sm" type="text" id="target" required [(ngModel)]="hcertContentDTO.t[0].tg" name="target" />
           </div>
 
-          <div class="form-group col-md-6 m-2">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="country" class="form-label">Country</label>
-            <input class="form-control form-control-sm" type="text" id="country" placeholder="Country" required [(ngModel)]="hcertContentDTO.t[0].co" name="country" />
+            <select class="form-select form-select-sm" name="country" id="country" required [(ngModel)]="hcertContentDTO.t[0].co">
+              <option value="" disabled>Select Country</option>
+              <option *ngFor="let country of countries" [value]="country.name">{{ country.name }}</option>
+            </select>
           </div>
         </div>
 
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="typeOfTest" class="form-label">Type of Test</label>
-            <input class="form-control form-control-sm" type="text" id="typeOfTest" placeholder="Type of Test" required [(ngModel)]="hcertContentDTO.t[0].tt" name="typeOfTest" />
+            <select class="form-select form-select-sm" name="typeOfTest" id="typeOfTest" required [(ngModel)]="hcertContentDTO.t[0].tt">
+              <option value="" disabled>Select Type of Test</option>
+              <option value="Nucleic acid amplification with probe detection">Nucleic acid amplification with probe detection</option>
+              <option value="Rapid immunoassay">Rapid immunoassay</option>
+            </select>
           </div>
 
-          <div class="form-group col-md-6 m-2">
-            <label for="nucleicAcidAmplName" class="form-label">Test Name of the Nucleic Acid Amplification Test</label>
-            <input
-              class="form-control form-control-sm"
-              type="text"
-              id="nucleicAcidAmplName"
-              placeholder="Test Name of the Nucleic Acid Amplification Test"
-              required
-              [(ngModel)]="hcertContentDTO.t[0].nm"
-              name="nucleicAcidAmplName"
-            />
+          <div class="form-group col-12 col-md-6 mb-3">
+            <label for="nucleicAcidAmplName" class="form-label">Test Name</label>
+            <select class="form-select form-select-sm" name="nucleicAcidAmplName" id="nucleicAcidAmplName" required [(ngModel)]="hcertContentDTO.t[0].nm">
+              <option value="" disabled>Select Test Name</option>
+              <option *ngFor="let tn of testName" [value]="tn.display">{{ tn.display }}</option>
+            </select>
           </div>
         </div>
 
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="testDeviceManufacturer" class="form-label">Rapid Antigen Test (RAT) Device Identifier</label>
-            <input
-              class="form-control form-control-sm"
-              type="text"
-              id="testDeviceManufacturer"
-              placeholder="Rapid Antigen Test (RAT) Device Identifier"
-              required
-              [(ngModel)]="hcertContentDTO.t[0].ma"
-              name="testDeviceManufacturer"
-            />
+            <select class="form-select form-select-sm" name="testDeviceManufacturer" id="testDeviceManufacturer" required [(ngModel)]="hcertContentDTO.t[0].ma">
+              <option value="" disabled>Select Rapid Antigen Test (RAT) Device Identifier</option>
+              <option *ngFor="let tm of testManf" [value]="tm.display">{{ tm.display }}</option>
+            </select>
           </div>
 
-          <div class="form-group col-md-6 m-2">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="sampleCollectionDate" class="form-label">Sample Collection Date Format</label>
             <input
               class="form-control form-control-sm"
@@ -86,35 +99,57 @@
           </div>
         </div>
 
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="testResult" class="form-label">Test Result</label>
-            <input class="form-control form-control-sm" type="text" id="testResult" placeholder="Test Result" required [(ngModel)]="hcertContentDTO.t[0].tr" name="testResult" />
+            <select class="form-select form-select-sm" name="testResult" id="testResult" required [(ngModel)]="hcertContentDTO.t[0].tr">
+              <option value="" disabled>Select Test Result</option>
+              <option value="Detected">Detected</option>
+              <option value="Not Detected">Not Detected</option>
+            </select>
           </div>
 
-          <div class="form-group col-md-6 m-2">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="testingCentre" class="form-label">Testing Centre</label>
             <input class="form-control form-control-sm" type="text" id="testingCentre" placeholder="Testing Centre" required [(ngModel)]="hcertContentDTO.t[0].tc" name="testingCentre" />
           </div>
         </div>
 
-        <div class="d-flex">
-          <div class="form-group col-md-6 m-2">
+        <div class="row">
+          <div class="form-group col-12 col-md-6 mb-3">
             <label for="issuer" class="form-label">Issuer</label>
             <input class="form-control form-control-sm" type="text" id="issuer" placeholder="Issuer" required [(ngModel)]="hcertContentDTO.t[0].is" name="issuer" />
           </div>
         </div>
-
-        <button type="submit" [disabled]="!testCovidForm.valid" class="btn btn-light btn-sm col-md-6 mt-4 m-2">Create Hcert Test QR Code</button>
+        <div class="row">
+          <div class="col-12 col-md-6 mt-4">
+            <button type="submit" [disabled]="!testCovidForm.valid" class="btn btn-light btn-sm w-100">Create Hcert Test QR Code</button>
+          </div>
+        </div>
       </form>
 
-      <button type="submit" class="btn btn-light btn-sm col-md-6  m-2" (click)="resetForm(testCovidForm)">Reset</button>
+      <div class="row">
+        <div class="col-12 col-md-6 mt-4 mb-3">
+          <button type="submit" class="btn btn-light btn-sm w-100" (click)="resetForm(testCovidForm)">Reset</button>
+        </div>
+      </div>
 
-      <div *ngIf="errorHandlerService.errorMessage" class="m-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
-      <div *ngIf="errorHandlerService.validationErrorServerResponse" class="m-2 text-danger">{{ errorHandlerService.validationErrorServerResponse | json }}</div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <div *ngIf="errorHandlerService.error" class="mb-2 text-danger">{{ errorHandlerService.error }}</div>
+          <div *ngIf="errorHandlerService.errorMessage" class="mb-2 text-danger">{{ errorHandlerService.errorMessage }}</div>
+          <div *ngIf="errorHandlerService.validationErrorServerResponse" class="mb-2 text-danger">
+            <ul>
+              <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">{{ errors.fieldName }}: {{ errors.message }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
 
-      <div *ngIf="hcertTestServerResponse">
-        <img class="img-fluid w-20 m-2" src="{{ hcertTestServerResponse }}" alt="hcert-test-qr-code" />
+      <div class="row mt-3" *ngIf="hcertTestServerResponse">
+        <div class="col-12 col-md-6">
+          <img class="img-fluid w-50" src="{{ hcertTestServerResponse }}" alt="hcert-test-qr-code" />
+        </div>
       </div>
     </section>
   </div>

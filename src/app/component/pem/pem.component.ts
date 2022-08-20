@@ -21,7 +21,10 @@ export class PemComponent {
       };
       this.hcertService.decodeX509Certificate(pemCertServRequest).subscribe({
         error: err => {
+          this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
+          this.pemCertServerResponse = null;
+          this.pemCertServerResponseJson = '';
         },
         next: res => {
           this.errorHandlerService.cleanupErrors();

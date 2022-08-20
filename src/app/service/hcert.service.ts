@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ClientCommunication} from '../server/clientCommunication';
-import HcertContentDTO = ClientCommunication.HcertContentDTO;
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +14,8 @@ export class HcertService {
   private static HCERT_VERIFY_URL = 'decovid19/hcert/verify';
   private static QR_CODE_URL_CLIENT = 'decovid19/hcert/qrcode/url/client';
   private static QR_CODE_TEST_COVID_CLIENT = 'decovid19/hcert/qrcode/hcert/client';
+  private static BASE45_ENCODE_URL = 'decovid19/hcert/base45/encode';
+  private static BASE45_DECODE_URL = 'decovid19/hcert/base45/decode';
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -47,8 +48,22 @@ export class HcertService {
     });
   }
 
-  createTestCovidQRCode(hcertContentDTO: HcertContentDTO): Observable<string> {
+  createTestCovidQRCode(hcertContentDTO: ClientCommunication.HcertContentDTO): Observable<string> {
     return this.http.post(HcertService.QR_CODE_TEST_COVID_CLIENT, hcertContentDTO, {
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      responseType: 'text'
+    });
+  }
+
+  encodeBase45(base45EncodeServerRequest: ClientCommunication.Base45EncodeServerRequest): Observable<string> {
+    return this.http.post(HcertService.BASE45_ENCODE_URL, base45EncodeServerRequest, {
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      responseType: 'text'
+    });
+  }
+
+  decodeBase45(base45DecodeServerRequest: ClientCommunication.Base45DecodeServerRequest): Observable<string> {
+    return this.http.post(HcertService.BASE45_DECODE_URL, base45DecodeServerRequest, {
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
       responseType: 'text'
     });

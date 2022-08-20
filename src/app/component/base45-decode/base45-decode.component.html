@@ -1,0 +1,38 @@
+<div class="container mt-3">
+  <div class="row justify-content-center">
+    <section class="text-sm-start">
+      <div class="row mb-3 mt-3">
+        <div class="col-12">
+          <h4>Base45 Decoder</h4>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <label for="stringInput" class="form-label">Input</label>
+          <input class="form-control form-control-sm" type="text" id="stringInput" placeholder="Input" #stringInput />
+          <button type="submit" class="btn btn-light btn-sm mt-2 w-100" (click)="decodeBase45(stringInput.value)">Decode from Base45</button>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12">
+          <div *ngIf="errorHandlerService.httpErrorResponse" class="mb-2 text-danger">{{ errorHandlerService.httpErrorResponse.error }}</div>
+          <div *ngIf="errorHandlerService.httpErrorResponse" class="mb-2 text-danger">{{ errorHandlerService.httpErrorResponse.message }}</div>
+          <div *ngIf="errorHandlerService.validationErrorServerResponse" class="mb-2 text-danger">
+            <ul>
+              <li *ngFor="let errors of errorHandlerService.validationErrorServerResponse.validationErrors">{{ errors.fieldName }}: {{ errors.message }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="base45ServerResponse" class="row mt-3">
+        <div class="col-12">
+          <label for="base45EncodedOutput" class="form-label">Base45 Encoded Output</label>
+          <textarea class="w-100" name="base45EncodedOutput" id="base45EncodedOutput" rows="10" [(ngModel)]="base45ServerResponse"></textarea>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

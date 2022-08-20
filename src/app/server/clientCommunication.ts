@@ -70,6 +70,7 @@ export namespace ClientCommunication {
   export interface HcertVerificationServerResponse {
     isHcertVerified: boolean;
     isTrustChainVerified: boolean;
+    certRawContent: string;
   }
 
   export interface ValidationErrorServerResponse {
@@ -78,6 +79,14 @@ export namespace ClientCommunication {
 
   export interface QRCodeServerRequest {
     url: string;
+  }
+
+  export interface Base45EncodeServerRequest {
+    base45Encode: string;
+  }
+
+  export interface Base45DecodeServerRequest {
+    base45Decode: string;
   }
 
   export interface HcertHolder {

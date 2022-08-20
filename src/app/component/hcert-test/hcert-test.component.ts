@@ -3,6 +3,11 @@ import {HcertService} from '../../service/hcert.service';
 import {ErrorHandlerService} from '../../service/error-handler.service';
 import {ClientCommunication} from '../../server/clientCommunication';
 import {NgForm} from '@angular/forms';
+import {CountriesInterface} from '../../interface/countries.interface';
+import {TestManfNameInterface} from '../../interface/testManfNameInterface';
+import {countriesJson} from '../../../assets/countries';
+import {testManfJson} from '../../../assets/test.manf';
+import {testNameJson} from '../../../assets/test.name';
 
 @Component({
   selector: 'app-hcert-test',
@@ -10,6 +15,11 @@ import {NgForm} from '@angular/forms';
 })
 export class HcertTestComponent {
   private static IMAGE_BASE_64_PNG = 'data:image/png;base64,';
+  private static TARGET = 'COVID-19';
+
+  countries: CountriesInterface[] = countriesJson;
+  testManf: TestManfNameInterface[] = testManfJson;
+  testName: TestManfNameInterface[] = testNameJson;
 
   hcertHolder: ClientCommunication.HcertHolder = {
     fn: '',
@@ -19,7 +29,7 @@ export class HcertTestComponent {
   };
 
   hcertTest: ClientCommunication.HcertTest = {
-    tg: '',
+    tg: HcertTestComponent.TARGET,
     co: '',
     tt: '',
     nm: '',
@@ -41,19 +51,18 @@ export class HcertTestComponent {
 
   constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
 
-  createTestCovidQRCode(form: NgForm) {
+  createTestCovidQRCode() {
     if (this.hcertContentDTO) {
-      console.log(this.hcertContentDTO);
       this.setStandardizedForAndSurname();
       this.hcertService.createTestCovidQRCode(this.hcertContentDTO).subscribe({
         error: err => {
+          this.errorHandlerService.cleanupErrors();
           this.errorHandlerService.setErrors(err);
           this.hcertTestServerResponse = '';
         },
         next: res => {
           this.errorHandlerService.cleanupErrors();
           this.hcertTestServerResponse = HcertTestComponent.IMAGE_BASE_64_PNG + res;
-          form.resetForm();
         }
       });
     }
@@ -68,5 +77,7 @@ export class HcertTestComponent {
 
   resetForm(form: NgForm) {
     form.resetForm();
+    this.hcertTest.tg = HcertTestComponent.TARGET;
+    this.hcertTestServerResponse = '';
   }
 }
