@@ -3,7 +3,98 @@
     <section class="text-sm-start">
       <div class="row mb-3 mt-3">
         <div class="col-12">
-          <h4>How to decode a Digital Health Certificate (WIP)</h4>
+          <h4>EU Digital COVID Health Certificate</h4>
+          <p class="mt-4 mb-4">
+            The image below depicts the encoding process (serialization pattern) defined by the European Commission and the EU countries for an uniform and interoperable proof of COVID vaccination.
+          </p>
+          <img class="img-fluid w-50" src="assets/encodingProcessHcert.jpg" alt="encodingProcess" />
+          <p class="mt-4 mb-4">
+            To facilitate a common interoperability a data structure is defined through the use of a "JSON" schema. The payload is structured and encoded as a "CBOR" with a "COSE" digital signature.
+            This is commonly known as a "CBOR Web Token (CWT)". The payload is transported in a hcert claim key. The issuer must sign the CWT using an asymmetric electronic signature scheme as defined
+            in the COSE specifications. To reduce the size and improve the speed and reliability of reading the hcert, the CWT shall be compressed using ZLib and the deflate compression mechanism. To
+            better deal with older equipment designed for ASCII payloads, the compressed CWT has been encoded as ASCII using Base45 before being converted to a 2D barcode.
+          </p>
+          <h5 class="mt-5">What is COSE?</h5>
+          <p class="mt-4 mb-4">
+            CBOR Object Signing and Encryption (COSE) is a data format for concise representation of small messages. The basic structure of a COSE message consists of Headers, Payload and Signature.
+            The receivers must implicitly know the public key to verify the message.
+          </p>
+          <ul>
+            <li>Protected Header: This contains information that needs to be protected.</li>
+            <li>Unprotected Header: All information contained here, are not protected by the cryptographic algorithms.</li>
+            <li>Payload: Contains the payload. Protected by the cryptographic algorithms.</li>
+          </ul>
+          <h5 class="mt-5 mb-4">CWT Structure Overview</h5>
+          <ul>
+            <li>
+              Protected Header
+              <ul>
+                <li>Signature Algorithm (alg, label 1)</li>
+                <li>Key Identifier (kid, label 4)</li>
+              </ul>
+            </li>
+            <li>
+              Payload
+              <ul>
+                <li>Issuer (iss, claim key 1, optional, ISO 3166-1 alpha-2 of issuer)</li>
+                <li>Issued At (iat, claim key 6)</li>
+                <li>Expiration Time (exp, claim key 4)</li>
+                <li>Health Certificate (hcert, claim key -260)</li>
+                <li>EU Digital COVID Certificate v1 (eu_DCC_v1, claim key 1)</li>
+              </ul>
+            </li>
+            <li>Signature</li>
+          </ul>
+          <h6 class="mt-5">Signature Algorithm</h6>
+          <ul>
+            <li>The primary algorithm is Elliptic Curve Digital Signature Algorithm (ECDSA) using the P-256 parameters in combination with the SHA-256 hash algorithm.</li>
+            <li>The secondary algorithm is RSASSA-PSS with a modulus of 2048 bits in combination with the SHA-256 algorithm.</li>
+          </ul>
+          <h6 class="mt-3">Key Identifier</h6>
+          <p class="mt-3 mb-4">
+            The Key Identifier (kid) claim is used by the verifiers for selecting the correct public key from a list of keys containing the digital signature. The Key Identifier is not a security
+            critical field, so it may be placed in the unprotected header.
+          </p>
+          <h5 class="mt-5">How to decode and verify a EU Digital Health Certificate in Java?</h5>
+          <p class="mt-3 mb-4">Go to my GitHub Repository for a complete implementation of the decoding process (Link in footer).</p>
+          <p class="mt-3 mb-4">A sample Covid-19 QR-Code was picked by the public available test data.</p>
+          <img class="img-fluid w-20" src="assets/swissQRCodeVaccinationCertificate.png" alt="swissQRCodeVaccinationCertificate" />
+          <p class="mt-3 mb-4">With a bit of work, it can be decoded in Java with the usage of some external dependencies.</p>
+          <div class="row mt-3">
+            <div class="col-12">
+              <label for="hcertPrefix" class="form-label">Hcert Prefix Output:</label>
+              <textarea class="w-100" name="hcertPrefix" id="hcertPrefix" rows="10">
+HC1:NCFS605G0/3WUWGSLKH47GO0KNJ9DSWQIIWT9CK4600XKY-CE59-G80:84F35RIV R2F3FMMTTBY50.FK6ZK7:EDOLOPCO8F6%E3.DA%EOPC1G72A6YM83G7NA7H:6JM8D%6I:61S8ZW6HL6C460S8VF6VX6UPC0JCZ69FVCPD0LVC6JD846Y96A466W5B56+EDG8F3I80/D6$CBECSUER:C2$NS346$C2%E9VC- CSUE145GB8JA5B$D% D3IA4W5646946%96X47.JCP9EJY8L/5M/5546.96D463KC.SC4KCD3DX47B46IL6646H*6Z/E5JD%96IA74R6646407GVC*JC1A6/Q63W5KF6746TPCBEC7ZKW.CU2DNXO VD5$C JC3/DMP8$ILZEDZ CW.C9WE.Y9AY8+S9VIAI3D8WEVM8:S9C+9$PC5$CUZCY$5Y$5FBBM00T%LTAT1MOQYR8GUN$K15LIGG2P27%A46BT52VUTL.1*B89Y5B428HRSR3I/E5DS/8NBY4H2BCN8NP1D4B:0K9UQQ67BLTH21AF0V8G52R 62+5BQYCV03SO79O6K+8UXL$T4$%RT150DUHZK+Q9TIE+IMQU4E/Q4T303TKWNXTSORE.4WNPCJX66NN-2F9IHTYLR6IR UAB98RR1A0P9DL0CS5KZ*HEGT1%TQWELFQHG5/JO9TI:.T1JQF.K7 EJ 2/CI5GASQP7ULRX4-07%9W2139E2HMGW99Q DQJADB3UAJKUCOVLG+9T+J:15.12U+OBMCJ1KZ+C+87I8I9JGA0T%U2CMFHI5U:L400C.CC/K3KJZ3OM/D59TBL5AZFMPIW4</textarea
+              >
+            </div>
+          </div>
+          <p class="mt-3 mb-4">
+            This is called a PREFIX and is recognized by the first characters starting with "HC1:". The Health Certificate contains binary information, so this information is encoded in Base45. For
+            the next step the PREFIX shall be removed and what we will get after decoding the BASE45 data are compressed bytes.
+          </p>
+          <div class="row mt-3">
+            <div class="col-12">
+              <label for="hcertCompressedBytes" class="form-label">Hcert Compress Data Hex Format Output:</label>
+              <textarea class="w-100" name="hcertCompressedBytes" id="hcertCompressedBytes" rows="10">
+78da012a02d5fdd2844ea201382404489a6adfce9314eb17a0590112a40166434820424147041a629326dc061a60b1f35c390103a101a4617681aa626369782775726e3a757663693a30313a43483a32393837434339363137444435353933383036443432383562636f62434862646e026264746a323032312d30342d3330626973781f42756e646573616d742066c3bc7220476573756e6468656974202842414729626d616d4f52472d313030303331313834626d706c45552f312f32302f3135303762736402627467693834303533393030366276706a3131313933343930303763646f626a313934332d30322d3031636e616da462666e674dc3bc6c6c657262676e6743c3a96c696e6563666e74674d55454c4c455263676e746643454c494e456376657265312e302e3059010016ace8e744c1b7dba7f026a4cca6ff8172143955cf581510d0eaca0f60415e2d901091d8981c96765fdfcab78225a9576e435f0c6557c49e60d2f93887e921085402ad8017d5f21104580c650017da3bb333b74664ac0824e2dc6627d7ef97a46c4beb7205b1582504d5471cd8e5ecbba3e2b67395fdfe63683556ba00772a89acac348f8bf3bd492ada5a01c368835f019f318d77e843ec147478d0622a6ec15a9384ecf3d102a5a57519163990a951efca6fab6a258c3788fedb17ea1251827f48e66d43528b19b7982b6446aba84e499d7027e61029c4fe62d59e74661738ef8fdc81f0e56f153e7a912ac8adf70004665aa5cf99d2be826e7ae6ff2b497cd892ddd4</textarea
+              >
+            </div>
+          </div>
+          <p class="mt-3 mb-4">
+            You will recognize the compressed data, because it always starts with the first octet 0x78 (sign for ZLib compression). After decompressing the data the whole message of the EU Digital
+            COVID Certificate as a COSE representation.
+          </p>
+          <div class="row mt-3">
+            <div class="col-12">
+              <label for="hcertDecompressedBytes" class="form-label">Hcert Decompressed Data Hex Format Output:</label>
+              <textarea class="w-100" name="hcertDecompressedBytes" id="hcertDecompressedBytes" rows="10">
+d2844ea201382404489a6adfce9314eb17a0590112a40166434820424147041a629326dc061a60b1f35c390103a101a4617681aa626369782775726e3a757663693a30313a43483a32393837434339363137444435353933383036443432383562636f62434862646e026264746a323032312d30342d3330626973781f42756e646573616d742066c3bc7220476573756e6468656974202842414729626d616d4f52472d313030303331313834626d706c45552f312f32302f3135303762736402627467693834303533393030366276706a3131313933343930303763646f626a313934332d30322d3031636e616da462666e674dc3bc6c6c657262676e6743c3a96c696e6563666e74674d55454c4c455263676e746643454c494e456376657265312e302e3059010016ace8e744c1b7dba7f026a4cca6ff8172143955cf581510d0eaca0f60415e2d901091d8981c96765fdfcab78225a9576e435f0c6557c49e60d2f93887e921085402ad8017d5f21104580c650017da3bb333b74664ac0824e2dc6627d7ef97a46c4beb7205b1582504d5471cd8e5ecbba3e2b67395fdfe63683556ba00772a89acac348f8bf3bd492ada5a01c368835f019f318d77e843ec147478d0622a6ec15a9384ecf3d102a5a57519163990a951efca6fab6a258c3788fedb17ea1251827f48e66d43528b19b7982b6446aba84e499d7027e61029c4fe62d59e74661738ef8fdc81f0e56f153e7a912ac8adf70004665aa5cf99d2be826e7ae6ff2b497c</textarea
+              >
+            </div>
+          </div>
+          <p class="row mt-3">
+
+          </p>
         </div>
       </div>
     </section>
