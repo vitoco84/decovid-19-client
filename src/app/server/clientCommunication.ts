@@ -12,7 +12,7 @@ export namespace ClientCommunication {
   export interface HcertContentDTO extends HcertDTO {
     r?: HcertRecovery[];
     v?: HcertVaccination[];
-    t: HcertTest[];
+    t?: HcertTest[];
   }
 
   export interface HcertPublicKeyDTO {

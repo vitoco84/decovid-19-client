@@ -55,9 +55,15 @@
             The Key Identifier (kid) claim is used by the verifiers for selecting the correct public key from a list of keys containing the digital signature. The Key Identifier is not a security
             critical field, so it may be placed in the unprotected header.
           </p>
-          <h5 class="mt-5">How to decode and verify a EU Digital Health Certificate in Java?</h5>
-          <p class="mt-3 mb-4">Go to my GitHub Repository for a complete implementation of the decoding process (Link in footer).</p>
-          <p class="mt-3 mb-4">A sample Covid-19 QR-Code was picked by the public available test data.</p>
+          <h5 class="mt-5">How to decode a EU Digital Health Certificate in Java?</h5>
+          <p class="mt-3 mb-4">
+            Go to my <a href="https://github.com/vitoco84/decovid-19-core" class="link-light" target="_blank" rel="noreferrer noopener">GitHub</a> repository for a complete implementation of the
+            decoding process.
+          </p>
+          <p class="mt-3 mb-4">
+            A sample Covid-19 QR-Code was picked by the public available
+            <a href="https://github.com/ehn-dcc-development/dcc-testdata" class="link-light" target="_blank" rel="noreferrer noopener">Test Data</a>.
+          </p>
           <img class="img-fluid w-20" src="assets/swissQRCodeVaccinationCertificate.png" alt="swissQRCodeVaccinationCertificate" />
           <p class="mt-3 mb-4">With a bit of work, it can be decoded in Java with the usage of some external dependencies.</p>
           <div class="row mt-3">
@@ -92,9 +98,105 @@ d2844ea201382404489a6adfce9314eb17a0590112a40166434820424147041a629326dc061a60b1
               >
             </div>
           </div>
-          <p class="row mt-3">
-
+          <p class="mt-3 mb-4">
+            Now that we have the COSE representation, all relevant information such as the Payload, Headers, Cose Signature can be decoded and retrieved with the respective claim key provided from the
+            "CWT" specifications above.
           </p>
+          <h6 class="mt-3">JSON Representation of the Payload (hcert)</h6>
+          <div class="row">
+            <div class="col-12">
+              <pre class="text-warning">{{ hcertContent | json }}</pre>
+            </div>
+          </div>
+          <h6 class="mt-3">Additional Payload and Headers Content</h6>
+          <ul>
+            <li>Key Identifier (kid): {{ keyId }}</li>
+            <li>Cose Algorithm (alg): {{ algo }}</li>
+            <li>Issuer (iss): {{ issuer }}</li>
+            <li>Expiration Time (exp): {{ expTime }}</li>
+            <li>Issued At (iat): {{ issuedAt }}</li>
+          </ul>
+          <p class="mt-3 mb-2">
+            The verification process for this sample data will clearly fail, since the Key Identifier is not active and will not be found in any public list for digital certificates.
+          </p>
+          <br />
+          <p class="mb-4">A brief explanation of the Payload of the Digital Vaccination EU COVID Certificate.</p>
+          <ul>
+            <li>The "dob" key: Date of Birth</li>
+            <li>The "ver" key: The schema Version</li>
+            <li>The "fn" key: Person Surname</li>
+            <li>The "gn" key: Person Name</li>
+            <li>
+              The "v" key: Contains list of vaccines
+              <ul>
+                <li>The "tg" key: Disease or agent targeted -> 840539006 = COVID-19</li>
+                <li>The "co" key: Country of Vaccination</li>
+                <li>The "ci" key: Unique certificate identifier</li>
+                <li>The "dn" key: Number in a series of doses</li>
+                <li>The "dt" key: Date of vaccination</li>
+                <li>The "is" key: Certificate issuer</li>
+                <li>The "ma" key: Vaccine marketing authorisation holder or manufacturer -> ORG-100031184 = Moderna Biotech Spain S.L.</li>
+                <li>The "mp" key: Vaccine product -> EU/1/20/1507 = Spikevax</li>
+                <li>The "sd" key: The overall number of doses in the series</li>
+                <li>The "vp" key: Vaccine or prophylaxis -> 1119349007 = SARS-CoV-2 mRNA vaccine</li>
+              </ul>
+            </li>
+          </ul>
+          <p class="mt-3 mb-4">
+            The vaccination display values are mapped through the
+            <a href="https://health.ec.europa.eu/system/files/2022-07/eu-dcc-value-sets_en.pdf" class="link-light" target="_blank" rel="noreferrer noopener">Value Set</a> document.
+          </p>
+          <p class="mt-3 mb-4">
+            For a more in detail explanation, please go through my Documentation page and the relevant links provided in my
+            <a href="https://github.com/vitoco84/decovid-19-documentation" class="link-light" target="_blank" rel="noreferrer noopener">GitHub</a> repository or download the
+            <a href="https://health.ec.europa.eu/system/files/2021-06/covid-certificate_json_specification_en_0.pdf" class="link-light" target="_blank" rel="noreferrer noopener"
+              >Technical Specifications</a
+            >.
+          </p>
+          <p>
+            Check my
+            <a
+              href="https://github.com/vitoco84/decovid-19-core/blob/main/src/main/java/ch/vitoco/decovid19core/service/HcertDecodingService.java"
+              class="link-light"
+              target="_blank"
+              rel="noreferrer noopener"
+              >Decoding Service</a
+            >
+            on how its done in Java.
+          </p>
+          <h5 class="mt-5">How to verify a EU Digital Health Certificate in Java?</h5>
+          <p class="mt-3 mb-2">
+            So far we have learned how to decode a EU Digital Health Certificate and get the essence of the COSE representation. I will briefly explain the process of verifying a digital certificate.
+          </p>
+          <p class="mt-3 mb-2">
+            Since we were able to retrieve the Key Identifier, the next step would be to get a raw digital certificate from an public available list like
+            <a href="https://de.test.dscg.ubirch.com/trustList/DSC/" class="link-light" target="_blank" rel="noreferrer noopener">this</a> one.
+          </p>
+          <p class="mt-3 mb-2">Afterwards once the format of the certificate is known, usually a X.509 digital certificate. We can easily retrieve the Public Key and all relevant parameters in it.</p>
+          <p class="mt-3 mb-2">Now we have all information needed for a verification process of a digital certificate:</p>
+          <ul>
+            <li>Public Key</li>
+            <li>COSE Signature</li>
+            <li>Protected Header</li>
+            <li>Hcert Payload</li>
+          </ul>
+          <p class="mt-3 mb-2">
+            Any Signature library can be used to verify a digital certificate. The Hcert Payload and the Protected Header is the content that is signed and needs to be verified with the available
+            Public Key.
+          </p>
+          <p class="mt-3 mb-2">
+            Check my
+            <a
+              href="https://github.com/vitoco84/decovid-19-core/blob/main/src/main/java/ch/vitoco/decovid19core/service/HcertVerificationService.java"
+              class="link-light"
+              target="_blank"
+              rel="noreferrer noopener"
+              >Verification Service</a
+            >
+            on how its done in Java.
+          </p>
+          <h5 class="mt-5">Conclusions</h5>
+          <p class="mt-3 mb-2">That's it. I hope you could follow along and get a better understanding of how a EU Digital COVID Certificate is encoded and verified.</p>
         </div>
       </div>
     </section>
