@@ -22,7 +22,7 @@ export class HcertComponent {
   certificateType: string;
   imgSrc: string;
 
-  constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService, private sanitizer: DomSanitizer) {}
+  constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
 
   decodeHealthCertificateContentFromFile(event): void {
     const file: File = event.target.files[0];
