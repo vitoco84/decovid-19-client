@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {HcertService} from '../../service/hcert.service';
 import {ClientCommunication} from '../../server/clientCommunication';
 import {ErrorHandlerService} from '../../service/error-handler.service';
-import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hcert-json',
