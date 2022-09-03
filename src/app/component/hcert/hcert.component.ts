@@ -11,6 +11,8 @@ export class HcertComponent {
   VACCINATION = 'Vaccination';
   RECOVERY = 'Recovery';
   TESTING = 'Test';
+  bearerToken: string;
+  hcertPrefix: string;
 
   hcertServerResponse: ClientCommunication.HcertServerResponse;
   hcertServerResponseJson: string;
@@ -53,12 +55,14 @@ export class HcertComponent {
         if (hcertPrefixInput) {
           this.imgSrc = '';
         }
+        this.bearerToken = '';
       }
     };
   }
 
   private readURL(event) {
     if (event.target.files && event.target.files[0]) {
+      this.hcertPrefix = '';
       const reader = new FileReader();
       reader.onload = e => {
         this.imgSrc = e.target.result as string;

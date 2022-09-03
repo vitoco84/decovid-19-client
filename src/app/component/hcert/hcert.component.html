@@ -34,18 +34,18 @@
 
       <div class="row mt-3">
         <div class="form-group col-12 col-md-6 mb-3">
-          <input class="form-control form-control-sm" type="text" id="bearerToken" placeholder="Bearer Token Required for Swiss Health Certificates Verification" required #bearerTokenInput />
+          <input class="form-control form-control-sm" type="text" id="bearerToken" [(ngModel)]="bearerToken" placeholder="Bearer Token Required for Swiss Health Certificates Verification" required #bearerTokenInput />
         </div>
 
         <div class="form-group col-12 col-md-6 mb-3">
-          <button type="button" class="btn btn-light btn-block btn-sm w-100" (click)="verifySwissHealthCertificate(bearerTokenInput.value)">Verify Swiss Certificate</button>
+          <button type="button" class="btn btn-light btn-block btn-sm w-100" [disabled]="!bearerToken" (click)="verifySwissHealthCertificate(bearerTokenInput.value)">Verify Swiss Certificate</button>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-12 col-md-6 mb-3">
           <label for="hcertPrefixString" class="form-label">Covid-19 QR Code Hcert Prefix Upload</label>
-          <input class="form-control form-control-sm" type="text" id="hcertPrefixString" placeholder="HCERT Prefix" #hcertPrefixInput />
+          <input class="form-control form-control-sm" type="text" id="hcertPrefixString" [(ngModel)]="hcertPrefix" placeholder="HCERT Prefix" #hcertPrefixInput />
           <button type="submit" class="btn btn-light btn-sm mt-2 w-100" (click)="decodeHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
         </div>
       </div>
