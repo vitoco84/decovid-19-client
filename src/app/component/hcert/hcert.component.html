@@ -5,16 +5,14 @@
         <div class="col-12">
           <h4>Health Certificate Decoder</h4>
           <p class="mt-4 mb-4">
-            This Single-Web-Page Application will display all the relevant information and some more details contained in the EU Digital COVID Health Certificate.
+            This Single-Web-Page Application will display all the relevant information and more in the EU Digital COVID Health Certificate.
             <br />
             All relevant links, documentation and project repositories can be found through the GitHub link provided in the footer.
           </p>
           <p class="mt-4 mb-4">
-            In order to decode and see the content of a Health Certificate QR-Code, you need to upload an image (allowed formats: png, jpg, jpeg, gif) through the button below.
+            In order to decode and see the content of a Health Certificate QR-Code, you need to upload an image (allowed format: png, jpg, jpeg, gif) through the button below.
             <br />
             Or you can provide the plain Health Certificate Prefix (starts with "HC1:") in the input field below and click on "Decode Hcert".
-            <br />
-            Please provide a good quality image. Even though there is an image processing step, there is no guarantee that the QR-Code will be found for a blurred image.
           </p>
           <p class="mt-4 mb-4">
             If you would like to verify the EU Certificate click on the "Verify EU Certificate" button for its validity and get some more information. In order to verify Swiss Covid Health
@@ -34,18 +32,18 @@
 
       <div class="row mt-3">
         <div class="form-group col-12 col-md-6 mb-3">
-          <input class="form-control form-control-sm" type="text" id="bearerToken" [(ngModel)]="bearerToken" placeholder="Bearer Token Required for Swiss Health Certificates Verification" required #bearerTokenInput />
+          <input class="form-control form-control-sm" type="text" id="bearerToken" placeholder="Bearer Token Required for Swiss Health Certificates Verification" required #bearerTokenInput />
         </div>
 
         <div class="form-group col-12 col-md-6 mb-3">
-          <button type="button" class="btn btn-light btn-block btn-sm w-100" [disabled]="!bearerToken" (click)="verifySwissHealthCertificate(bearerTokenInput.value)">Verify Swiss Certificate</button>
+          <button type="button" class="btn btn-light btn-block btn-sm w-100" (click)="verifySwissHealthCertificate(bearerTokenInput.value)">Verify Swiss Certificate</button>
         </div>
       </div>
 
       <div class="row">
         <div class="form-group col-12 col-md-6 mb-3">
           <label for="hcertPrefixString" class="form-label">Covid-19 QR Code Hcert Prefix Upload</label>
-          <input class="form-control form-control-sm" type="text" id="hcertPrefixString" [(ngModel)]="hcertPrefix" placeholder="HCERT Prefix" #hcertPrefixInput />
+          <input class="form-control form-control-sm" type="text" id="hcertPrefixString" placeholder="HCERT Prefix" #hcertPrefixInput />
           <button type="submit" class="btn btn-light btn-sm mt-2 w-100" (click)="decodeHealthCertificateContentFromPrefix(hcertPrefixInput.value)">Decode Hcert</button>
         </div>
       </div>
@@ -68,7 +66,7 @@
       </div>
 
       <div class="row">
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-6">
           <div
             *ngIf="!isSwitched && !errorHandlerService.error && !errorHandlerService.errorMessage && !errorHandlerService.validationErrorServerResponse"
             class="d-sm-flex align-items-center justify-content-between"
@@ -83,11 +81,9 @@
         </div>
       </div>
 
-      <div id="targetHcertServerResponse">
-        <div class="row mt-3 mb-3" *ngIf="hcertServerResponse">
-          <div class="col-12 col-md-6">
-            <h4>Health Certificate Content</h4>
-          </div>
+      <div class="row mt-3 mb-3" *ngIf="hcertServerResponse">
+        <div class="col-12 col-md-6">
+          <h4>Health Certificate Content</h4>
         </div>
       </div>
 
@@ -534,11 +530,9 @@
         </div>
       </div>
 
-      <div id="targetHcertVerificationServerResponse">
-        <div class="row mt-3 mb-3" *ngIf="hcertVerificationServerResponse">
-          <div class="col-12 col-md-6">
-            <h4>Health Certificate Verification Content</h4>
-          </div>
+      <div class="row mt-3 mb-3" *ngIf="hcertVerificationServerResponse">
+        <div class="col-12 col-md-6">
+          <h4>Health Certificate Verification Content</h4>
         </div>
       </div>
 

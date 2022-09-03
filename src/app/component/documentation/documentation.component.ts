@@ -1,23 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ClientCommunication} from '../../server/clientCommunication';
-import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-documentation-data',
   templateUrl: './documentation.component.html'
 })
-export class DocumentationComponent implements OnInit {
-  constructor(private router: Router) {}
-
-  ngOnInit() {
-    this.router.events.subscribe(event => {
-      if (!(event instanceof NavigationEnd)) {
-        return;
-      }
-      window.scrollTo(0, 0);
-    });
-  }
-
+export class DocumentationComponent {
   keyId = 'mmrfzpMU6xc=';
   algo = 'SHA256withRSA/PSS';
   issuer = 'CH BAG';

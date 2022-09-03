@@ -17,7 +17,6 @@ import {ClipboardModule} from 'ngx-clipboard';
 import {Base45EncodeComponent} from './component/base45-encode/base45-encode.component';
 import {Base45DecodeComponent} from './component/base45-decode/base45-decode.component';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import {ScrollToTopComponent} from './component/scroll-to-top/scroll-to-top.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +30,7 @@ import {ScrollToTopComponent} from './component/scroll-to-top/scroll-to-top.comp
     UrlComponent,
     HcertTestComponent,
     Base45EncodeComponent,
-    Base45DecodeComponent,
-    ScrollToTopComponent
+    Base45DecodeComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule, ClipboardModule],
   providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
