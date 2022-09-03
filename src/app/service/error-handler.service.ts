@@ -18,7 +18,11 @@ export class ErrorHandlerService {
     if (err.status === HttpStatusCode.InternalServerError) {
       this.error = err.error.error;
       this.errorMessage = err.error.message;
-      this.httpErrorResponse = JSON.parse(err.error);
+      try {
+        this.httpErrorResponse = JSON.parse(err.error);
+      } catch (e) {
+        this.httpErrorResponse = err.error.error;
+      }
     }
     if (err.status === HttpStatusCode.BadRequest) {
       if (typeof err.error === ErrorHandlerService.OBJECT) {

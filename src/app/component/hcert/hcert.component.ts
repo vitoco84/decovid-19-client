@@ -1,8 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {HcertService} from '../../service/hcert.service';
 import {ClientCommunication} from '../../server/clientCommunication';
 import {ErrorHandlerService} from '../../service/error-handler.service';
-import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hcert-json',
@@ -12,6 +11,8 @@ export class HcertComponent {
   VACCINATION = 'Vaccination';
   RECOVERY = 'Recovery';
   TESTING = 'Test';
+  bearerToken: string;
+  hcertPrefix: string;
 
   hcertServerResponse: ClientCommunication.HcertServerResponse;
   hcertServerResponseJson: string;
@@ -22,7 +23,7 @@ export class HcertComponent {
   certificateType: string;
   imgSrc: string;
 
-  constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService) {}
+  constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService, public element: ElementRef) {}
 
   decodeHealthCertificateContentFromFile(event): void {
     const file: File = event.target.files[0];
@@ -54,12 +55,14 @@ export class HcertComponent {
         if (hcertPrefixInput) {
           this.imgSrc = '';
         }
+        this.bearerToken = '';
       }
     };
   }
 
   private readURL(event) {
     if (event.target.files && event.target.files[0]) {
+      this.hcertPrefix = '';
       const reader = new FileReader();
       reader.onload = e => {
         this.imgSrc = e.target.result as string;
@@ -79,6 +82,14 @@ export class HcertComponent {
     this.hcertServerResponse = res;
     this.hcertServerResponseJson = JSON.stringify(this.hcertServerResponse, null, 2);
     this.setCertificateType();
+    this.scrollToHcertServerResponse();
+  }
+
+  private scrollToHcertServerResponse(): void {
+    const container = this.element.nativeElement.querySelector('#targetHcertServerResponse');
+    const boundingClientRect = container.getBoundingClientRect();
+    document.body.scrollTop = boundingClientRect.y;
+    document.documentElement.scrollTop = boundingClientRect.y;
   }
 
   verifySwissHealthCertificate(bearerTokenInput: string): void {
@@ -130,6 +141,14 @@ export class HcertComponent {
     this.errorHandlerService.cleanupErrors();
     this.hcertVerificationServerResponse = res;
     this.hcertVerificationServerResponseJson = JSON.stringify(this.hcertVerificationServerResponse, null, 2);
+    this.scrollToHcertVerificationServerResponse();
+  }
+
+  private scrollToHcertVerificationServerResponse(): void {
+    const container = this.element.nativeElement.querySelector('#targetHcertVerificationServerResponse');
+    const boundingClientRect = container.getBoundingClientRect();
+    document.body.scrollTop = boundingClientRect.y;
+    document.documentElement.scrollTop = boundingClientRect.y;
   }
 
   private setCertificateType(): void {
