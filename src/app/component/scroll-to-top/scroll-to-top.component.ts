@@ -1,5 +1,4 @@
-import {Component, HostListener, Inject} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
+import {Component, HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-scroll-to-top',
@@ -8,8 +7,6 @@ import {DOCUMENT} from '@angular/common';
 })
 export class ScrollToTopComponent {
   windowScrolled: boolean;
-
-  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   @HostListener('window:scroll')
   onWindowScroll() {
