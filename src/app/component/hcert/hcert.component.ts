@@ -5,7 +5,8 @@ import {ErrorHandlerService} from '../../service/error-handler.service';
 
 @Component({
   selector: 'app-hcert-json',
-  templateUrl: './hcert.component.html'
+  templateUrl: './hcert.component.html',
+  styleUrls: ['./hcert.component.css']
 })
 export class HcertComponent {
   VACCINATION = 'Vaccination';
