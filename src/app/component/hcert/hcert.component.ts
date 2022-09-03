@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef} from '@angular/core';
 import {HcertService} from '../../service/hcert.service';
 import {ClientCommunication} from '../../server/clientCommunication';
 import {ErrorHandlerService} from '../../service/error-handler.service';
