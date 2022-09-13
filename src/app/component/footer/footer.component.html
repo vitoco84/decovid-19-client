@@ -2,19 +2,19 @@
   <footer class="d-flex flex-column align-items-center py-3 my-4 border-top">
     <ul class="nav justify-content-end list-unstyled d-flex mb-3" routerLinkActive="active">
       <li class="ms-3 nav-item">
-        <a class="text-light nav-link" routerLink="/about">About</a>
+        <a class="text-light nav-link link-warning" routerLink="/about">About</a>
       </li>
       <li class="ms-3 nav-item">
-        <a class="text-light nav-link" routerLink="/documentation">Documentation</a>
+        <a class="text-light nav-link link-warning" routerLink="/documentation">Documentation</a>
       </li>
       <div *ngIf="localHost; else heroku">
         <li class="ms-3 nav-item">
-          <a class="text-light nav-link" href="http://localhost:8080/swagger-ui/index.html">Swagger UI</a>
+          <a class="text-light nav-link link-warning" href="http://localhost:8080/swagger-ui/index.html">Swagger UI</a>
         </li>
       </div>
       <ng-template #heroku>
         <li class="ms-3 nav-item">
-          <a class="text-light nav-link" href="https://decovid-19-app.herokuapp.com/swagger-ui/index.html">Swagger UI</a>
+          <a class="text-light nav-link link-warning" href="https://decovid-19-app.herokuapp.com/swagger-ui/index.html">Swagger UI</a>
         </li>
       </ng-template>
       <li class="ms-3 nav-item">
