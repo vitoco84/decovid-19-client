@@ -26,6 +26,10 @@ export class HcertComponent {
 
   constructor(private hcertService: HcertService, public errorHandlerService: ErrorHandlerService, public element: ElementRef) {}
 
+  cleanupErrors() {
+    this.errorHandlerService.cleanupErrors();
+  }
+
   decodeHealthCertificateContentFromFile(event): void {
     const file: File = event.target.files[0];
     this.readURL(event);

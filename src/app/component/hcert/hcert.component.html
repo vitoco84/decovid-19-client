@@ -22,6 +22,10 @@
             Certificates a Bearer Token needs to be provided, which can be requested through the Swiss Federal Office of Information Technology, Systems and Telecommunication.
           </p>
           <p class="mt-4 mb-4">After the decoding process, you can switch between the raw Json content and a more human readable version with the switch button "Human Readable".</p>
+          <p class="mt-4 mb-4">
+            The verification process will output, if available, the Raw Certificate. You can use this text output in the
+            <a class="link-light" routerLinkActive="active" routerLink="/pemDecoder" (click)="cleanupErrors()">PEM Decoder</a> section to decode its content.
+          </p>
         </div>
       </div>
 
